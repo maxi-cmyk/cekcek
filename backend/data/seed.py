@@ -61,9 +61,9 @@ def reset_sqlite():
 def verify_clickhouse():
     client = get_client()
     counts = {
-        "consumption": client.query("SELECT count() FROM sp_energy_pulse.consumption").result_rows[0][0],
-        "cohort_baselines": client.query("SELECT count() FROM sp_energy_pulse.cohort_baselines").result_rows[0][0],
-        "grid_demand": client.query("SELECT count() FROM sp_energy_pulse.grid_demand").result_rows[0][0],
+        "consumption": client.query("SELECT count() FROM cekcek.consumption").result_rows[0][0],
+        "cohort_baselines": client.query("SELECT count() FROM cekcek.cohort_baselines").result_rows[0][0],
+        "grid_demand": client.query("SELECT count() FROM cekcek.grid_demand").result_rows[0][0],
     }
     for table, count in counts.items():
         print(f"  {table}: {count:,} rows")

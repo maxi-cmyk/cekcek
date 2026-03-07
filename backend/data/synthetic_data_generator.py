@@ -214,7 +214,7 @@ def load_to_clickhouse(rows: list[dict]) -> None:
     dataframe = pd.DataFrame(rows)
     for start in range(0, len(dataframe), 5000):
         batch = dataframe.iloc[start:start + 5000]
-        client.insert_df("sp_energy_pulse.consumption", batch)
+        client.insert_df("cekcek.consumption", batch)
         print(f"Inserted rows {start}-{start + len(batch)}")
     print(f"Total rows loaded: {len(rows)}")
 

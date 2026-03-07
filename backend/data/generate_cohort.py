@@ -30,7 +30,7 @@ def generate_cohort_baselines():
 
     client = get_client()
     df = pd.DataFrame(rows)
-    client.insert_df("sp_energy_pulse.cohort_baselines", df)
+    client.insert_df("cekcek.cohort_baselines", df)
     print(f"Loaded {len(rows)} cohort baseline rows")
 
 if __name__ == "__main__":

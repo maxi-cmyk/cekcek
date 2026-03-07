@@ -2,7 +2,7 @@ from db.clickhouse import get_client
 
 TABLES = [
     """
-    CREATE TABLE IF NOT EXISTS sp_energy_pulse.consumption
+    CREATE TABLE IF NOT EXISTS cekcek.consumption
     (
         household_id   String,
         timestamp      DateTime,
@@ -17,7 +17,7 @@ TABLES = [
     PARTITION BY toYYYYMM(timestamp);
     """,
     """
-    CREATE TABLE IF NOT EXISTS sp_energy_pulse.cohort_baselines
+    CREATE TABLE IF NOT EXISTS cekcek.cohort_baselines
     (
         hdb_type       String,
         household_size UInt8,
@@ -35,7 +35,7 @@ TABLES = [
     ORDER BY (hdb_type, household_size, month, time_slot, day_type);
     """,
     """
-    CREATE TABLE IF NOT EXISTS sp_energy_pulse.grid_demand
+    CREATE TABLE IF NOT EXISTS cekcek.grid_demand
     (
         timestamp      DateTime,
         demand_mw      Float32,
@@ -48,7 +48,7 @@ TABLES = [
     ORDER BY timestamp;
     """,
     """
-    CREATE TABLE IF NOT EXISTS sp_energy_pulse.appliance_signatures
+    CREATE TABLE IF NOT EXISTS cekcek.appliance_signatures
     (
         appliance_name     String,
         tick_rating        UInt8,

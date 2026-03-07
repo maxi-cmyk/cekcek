@@ -42,7 +42,7 @@ def generate_grid_demand():
 
     client = get_client()
     df = pd.DataFrame(rows)
-    client.insert_df("sp_energy_pulse.grid_demand", df)
+    client.insert_df("cekcek.grid_demand", df)
     print(f"Loaded {len(rows)} grid demand rows")
 
 if __name__ == "__main__":
