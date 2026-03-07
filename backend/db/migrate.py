@@ -5,7 +5,7 @@ TABLES = [
     CREATE TABLE IF NOT EXISTS cekcek.consumption
     (
         household_id   String,
-        timestamp      DateTime,
+        timestamp      DateTime,            
         kwh            Float32,
         day_type       Enum8('weekday' = 1, 'weekend' = 2, 'public_holiday' = 3),
         time_slot      UInt8,

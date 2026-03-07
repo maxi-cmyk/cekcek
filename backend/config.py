@@ -1,14 +1,17 @@
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 
 class Settings(BaseSettings):
     clickhouse_host: str
     clickhouse_port: int = 8443
     clickhouse_user: str = "default"
     clickhouse_password: str
-    clickhouse_database: str = "cekcek"
+    clickhouse_database: str
     
     openai_api_key: str
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=str(_ENV_FILE), env_file_encoding="utf-8")
 
 settings = Settings()
