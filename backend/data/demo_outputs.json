@@ -16,315 +16,315 @@
   "dashboard_timeseries": [
     {
       "time": "00:00",
-      "kwh": 0.18,
+      "kwh": 0.2,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "00:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
+      "kwh": 0.18,
+      "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "01:00",
-      "kwh": 0.18,
+      "kwh": 0.2,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "01:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
+      "kwh": 0.18,
+      "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "02:00",
-      "kwh": 0.18,
+      "kwh": 0.2,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "02:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
+      "kwh": 0.18,
+      "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "03:00",
-      "kwh": 0.18,
+      "kwh": 0.2,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "03:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
+      "kwh": 0.18,
+      "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "04:00",
-      "kwh": 0.18,
+      "kwh": 0.2,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "04:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
-      "bubble_tea_equivalent": 1,
-      "peak_flag": false
-    },
-    {
-      "time": "05:00",
       "kwh": 0.18,
       "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
+      "time": "05:00",
+      "kwh": 0.2,
+      "estimated_cost_sgd": 0.05,
+      "bubble_tea_equivalent": 1,
+      "peak_flag": false
+    },
+    {
       "time": "05:30",
-      "kwh": 0.16,
-      "estimated_cost_sgd": 0.04,
+      "kwh": 0.18,
+      "estimated_cost_sgd": 0.05,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "06:00",
-      "kwh": 0.42,
-      "estimated_cost_sgd": 0.11,
+      "kwh": 0.45,
+      "estimated_cost_sgd": 0.12,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "06:30",
-      "kwh": 0.56,
-      "estimated_cost_sgd": 0.15,
+      "kwh": 0.59,
+      "estimated_cost_sgd": 0.16,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "07:00",
-      "kwh": 0.42,
-      "estimated_cost_sgd": 0.11,
+      "kwh": 0.45,
+      "estimated_cost_sgd": 0.12,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "07:30",
-      "kwh": 0.56,
-      "estimated_cost_sgd": 0.15,
+      "kwh": 0.59,
+      "estimated_cost_sgd": 0.16,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "08:00",
-      "kwh": 0.68,
-      "estimated_cost_sgd": 0.18,
+      "kwh": 0.71,
+      "estimated_cost_sgd": 0.19,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "08:30",
-      "kwh": 0.74,
-      "estimated_cost_sgd": 0.2,
-      "bubble_tea_equivalent": 1,
+      "kwh": 0.77,
+      "estimated_cost_sgd": 0.21,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "09:00",
-      "kwh": 0.68,
-      "estimated_cost_sgd": 0.18,
+      "kwh": 0.71,
+      "estimated_cost_sgd": 0.19,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "09:30",
-      "kwh": 0.74,
-      "estimated_cost_sgd": 0.2,
-      "bubble_tea_equivalent": 1,
+      "kwh": 0.77,
+      "estimated_cost_sgd": 0.21,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "10:00",
-      "kwh": 0.68,
-      "estimated_cost_sgd": 0.18,
+      "kwh": 0.71,
+      "estimated_cost_sgd": 0.19,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "10:30",
-      "kwh": 0.74,
-      "estimated_cost_sgd": 0.2,
-      "bubble_tea_equivalent": 1,
+      "kwh": 0.77,
+      "estimated_cost_sgd": 0.21,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "11:00",
-      "kwh": 0.68,
-      "estimated_cost_sgd": 0.18,
+      "kwh": 0.71,
+      "estimated_cost_sgd": 0.19,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
     },
     {
       "time": "11:30",
-      "kwh": 0.74,
-      "estimated_cost_sgd": 0.2,
-      "bubble_tea_equivalent": 1,
-      "peak_flag": false
-    },
-    {
-      "time": "12:00",
-      "kwh": 0.96,
-      "estimated_cost_sgd": 0.26,
+      "kwh": 0.77,
+      "estimated_cost_sgd": 0.21,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
-      "time": "12:30",
-      "kwh": 1.08,
+      "time": "12:00",
+      "kwh": 1.06,
       "estimated_cost_sgd": 0.29,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
+      "time": "12:30",
+      "kwh": 1.16,
+      "estimated_cost_sgd": 0.31,
+      "bubble_tea_equivalent": 2,
+      "peak_flag": false
+    },
+    {
       "time": "13:00",
-      "kwh": 1.22,
-      "estimated_cost_sgd": 0.33,
+      "kwh": 1.06,
+      "estimated_cost_sgd": 0.29,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "13:30",
-      "kwh": 1.34,
-      "estimated_cost_sgd": 0.36,
-      "bubble_tea_equivalent": 3,
+      "kwh": 1.16,
+      "estimated_cost_sgd": 0.31,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "14:00",
-      "kwh": 2.48,
-      "estimated_cost_sgd": 0.67,
-      "bubble_tea_equivalent": 5,
+      "kwh": 1.06,
+      "estimated_cost_sgd": 0.29,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "14:30",
-      "kwh": 1.92,
-      "estimated_cost_sgd": 0.52,
-      "bubble_tea_equivalent": 4,
+      "kwh": 1.16,
+      "estimated_cost_sgd": 0.31,
+      "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "15:00",
-      "kwh": 1.12,
-      "estimated_cost_sgd": 0.3,
+      "kwh": 1.0,
+      "estimated_cost_sgd": 0.27,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "15:30",
-      "kwh": 0.96,
-      "estimated_cost_sgd": 0.26,
+      "kwh": 0.92,
+      "estimated_cost_sgd": 0.25,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "16:00",
-      "kwh": 1.12,
-      "estimated_cost_sgd": 0.3,
+      "kwh": 1.0,
+      "estimated_cost_sgd": 0.27,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "16:30",
-      "kwh": 0.96,
-      "estimated_cost_sgd": 0.26,
+      "kwh": 0.92,
+      "estimated_cost_sgd": 0.25,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "17:00",
-      "kwh": 1.12,
-      "estimated_cost_sgd": 0.3,
+      "kwh": 1.0,
+      "estimated_cost_sgd": 0.27,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "17:30",
-      "kwh": 0.96,
-      "estimated_cost_sgd": 0.26,
+      "kwh": 0.92,
+      "estimated_cost_sgd": 0.25,
       "bubble_tea_equivalent": 2,
       "peak_flag": false
     },
     {
       "time": "18:00",
-      "kwh": 1.14,
-      "estimated_cost_sgd": 0.31,
-      "bubble_tea_equivalent": 2,
+      "kwh": 1.3,
+      "estimated_cost_sgd": 0.35,
+      "bubble_tea_equivalent": 3,
       "peak_flag": true
     },
     {
       "time": "18:30",
-      "kwh": 1.28,
-      "estimated_cost_sgd": 0.35,
+      "kwh": 1.42,
+      "estimated_cost_sgd": 0.38,
       "bubble_tea_equivalent": 3,
       "peak_flag": true
     },
     {
       "time": "19:00",
-      "kwh": 1.14,
-      "estimated_cost_sgd": 0.31,
-      "bubble_tea_equivalent": 2,
+      "kwh": 2.34,
+      "estimated_cost_sgd": 0.63,
+      "bubble_tea_equivalent": 5,
       "peak_flag": true
     },
     {
       "time": "19:30",
-      "kwh": 1.28,
+      "kwh": 1.92,
+      "estimated_cost_sgd": 0.52,
+      "bubble_tea_equivalent": 4,
+      "peak_flag": true
+    },
+    {
+      "time": "20:00",
+      "kwh": 1.3,
       "estimated_cost_sgd": 0.35,
       "bubble_tea_equivalent": 3,
       "peak_flag": true
     },
     {
-      "time": "20:00",
-      "kwh": 1.14,
-      "estimated_cost_sgd": 0.31,
-      "bubble_tea_equivalent": 2,
-      "peak_flag": true
-    },
-    {
       "time": "20:30",
-      "kwh": 1.28,
-      "estimated_cost_sgd": 0.35,
+      "kwh": 1.42,
+      "estimated_cost_sgd": 0.38,
       "bubble_tea_equivalent": 3,
       "peak_flag": true
     },
     {
       "time": "21:00",
-      "kwh": 1.14,
-      "estimated_cost_sgd": 0.31,
-      "bubble_tea_equivalent": 2,
-      "peak_flag": true
-    },
-    {
-      "time": "21:30",
-      "kwh": 1.28,
+      "kwh": 1.3,
       "estimated_cost_sgd": 0.35,
       "bubble_tea_equivalent": 3,
       "peak_flag": true
     },
     {
+      "time": "21:30",
+      "kwh": 1.42,
+      "estimated_cost_sgd": 0.38,
+      "bubble_tea_equivalent": 3,
+      "peak_flag": true
+    },
+    {
       "time": "22:00",
-      "kwh": 0.52,
+      "kwh": 0.5,
       "estimated_cost_sgd": 0.14,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
@@ -338,7 +338,7 @@
     },
     {
       "time": "23:00",
-      "kwh": 0.52,
+      "kwh": 0.5,
       "estimated_cost_sgd": 0.14,
       "bubble_tea_equivalent": 1,
       "peak_flag": false
@@ -353,437 +353,425 @@
   ],
   "insights": [
     {
-      "id": "weekday-aircon-spike",
-      "title": "Afternoon aircon spike detected",
-      "summary": "Yesterday at 2:00 PM your usage jumped far above the usual weekday baseline, which points to a longer or colder aircon run than normal.",
-      "analogy": "That extra burst was like buying 4 bubble teas in one afternoon.",
+      "id": "laundry-peak-cost",
+      "title": "Laundry is landing in the expensive window",
+      "summary": "Your dryer and washer usage clusters around 7:00 PM, which is one of the least efficient times to run heavy appliances.",
+      "analogy": "It is like joining the longest hawker queue instead of going later.",
       "impact": {
-        "cost_sgd": 0.67,
-        "carbon_kg": 0.92,
-        "savings_if_shifted_sgd": 14.0
+        "cost_sgd": 0.58,
+        "carbon_kg": 0.26,
+        "savings_if_shifted_sgd": 12.0
       },
-      "action": "Raise the aircon by 1-2C after lunch or start it 30 minutes later."
+      "action": "Shift full laundry cycles to after 11:00 PM on weekdays."
     },
     {
-      "id": "off-peak-laundry",
-      "title": "Laundry is cheaper after 11:00 PM",
-      "summary": "Running one dryer cycle during off-peak hours would cut both cost and grid pressure without changing your weekly routine.",
-      "analogy": "It is the energy equivalent of skipping one MRT ride every week.",
+      "id": "tou-win",
+      "title": "Your tariff can work harder",
+      "summary": "You are on a Time-of-Use plan but the biggest flexible loads still sit inside the peak tariff band.",
+      "analogy": "That misses the same kind of discount as buying early instead of during surge pricing.",
       "impact": {
-        "cost_sgd": 0.4,
-        "carbon_kg": 0.21,
-        "savings_if_shifted_sgd": 9.0
+        "cost_sgd": 0.44,
+        "carbon_kg": 0.22,
+        "savings_if_shifted_sgd": 10.0
       },
-      "action": "Set a nightly reminder for laundry after 11:00 PM."
+      "action": "Batch dryer loads for the late-night off-peak period."
     },
     {
-      "id": "forest-streak",
-      "title": "Your streak is helping your tree thrive",
-      "summary": "You have maintained six lower-usage days, which keeps your Resilience Forest tree in a thriving state.",
-      "analogy": "Your streak is like saving enough energy to power a laptop for most of a workday.",
+      "id": "habit-momentum",
+      "title": "One scheduling tweak keeps the streak alive",
+      "summary": "You are close to another reward tier and laundry timing is the simplest lever to get there.",
+      "analogy": "It is the energy version of taking one less paid ride every week.",
       "impact": {
-        "cost_sgd": 1.2,
-        "carbon_kg": 0.55,
-        "savings_if_shifted_sgd": 18.0
+        "cost_sgd": 0.35,
+        "carbon_kg": 0.18,
+        "savings_if_shifted_sgd": 8.0
       },
-      "action": "Protect the streak by avoiding heavy appliance use from 7:00 PM to 9:00 PM."
+      "action": "Use a nightly reminder at 10:45 PM for queued laundry loads."
     }
   ],
   "spike_events": [
     {
       "date": "2026-03-06",
-      "spike_time": "14:00",
-      "display_time": "2:00 PM",
-      "reading_kwh": 2.48,
-      "baseline_kwh": 1.21,
-      "stddev_kwh": 0.43,
-      "z_score": 2.95,
-      "estimated_cost_sgd": 0.67,
+      "spike_time": "19:00",
+      "display_time": "7:00 PM",
+      "reading_kwh": 2.34,
+      "baseline_kwh": 1.18,
+      "stddev_kwh": 0.38,
+      "z_score": 3.05,
+      "estimated_cost_sgd": 0.63,
       "bubble_tea_equivalent": 4,
       "likely_appliances": [
-        "Aircon",
         "Dryer",
-        "Oven",
+        "Washer",
+        "Aircon",
         "Other"
       ],
       "recommended_actions": [
-        "Set the aircon to 25C during the afternoon.",
-        "Pre-cool the bedroom for 30 minutes instead of running for the full afternoon.",
-        "Move any dryer cycle to after 11:00 PM."
+        "Move dryer cycles to after 11:00 PM.",
+        "Combine smaller loads into one full load.",
+        "Use high-spin mode to shorten dryer runtime."
       ],
-      "explanation": "The spike is most consistent with a longer-than-usual aircon session, with dryer use as a secondary possibility."
+      "explanation": "The spike is consistent with a dryer-led laundry block during the peak tariff window."
     }
   ],
   "forecast_results": {
     "forecast_month": "2026-04",
     "predicted_bill_sgd": {
-      "min": 98.0,
-      "max": 112.0
+      "min": 91.0,
+      "max": 105.0
     },
-    "confidence": "medium",
-    "context": "April is typically warmer than February in Singapore, so cooling load is likely to rise during late afternoons and early evenings.",
+    "confidence": "high",
+    "context": "Your overall usage is stable, but peak-hour laundry is adding avoidable cost to the next bill range.",
     "drivers": [
-      "Warmer evenings increase aircon runtime.",
-      "Weekday afternoon occupancy has been higher than your recent baseline.",
-      "Your household remains more efficient than similar 4-room HDB homes."
+      "Evening dryer sessions occur several times per week.",
+      "Cooling load is steady rather than rising sharply.",
+      "Flexible appliances can move into off-peak hours."
     ],
-    "top_tip": "Raising the aircon to 25C could lower the next bill by about SGD 14."
+    "top_tip": "Moving two weekly dryer cycles off-peak could cut the next bill by about SGD 12."
   },
   "disaggregation_attributions": {
     "top_appliances": [
       {
-        "name": "Aircon",
-        "share_pct": 34,
-        "monthly_cost_sgd": 38.0,
-        "monthly_kwh": 136.0,
-        "tip": "Limit afternoon cooling bursts and use sleep mode overnight."
-      },
-      {
-        "name": "Water heater",
-        "share_pct": 18,
-        "monthly_cost_sgd": 19.5,
-        "monthly_kwh": 70.0,
-        "tip": "Shorten shower heater runtime by a few minutes each day."
-      },
-      {
-        "name": "Fridge",
-        "share_pct": 14,
-        "monthly_cost_sgd": 15.2,
-        "monthly_kwh": 54.0,
-        "tip": "Check the door seal and avoid overfilling the shelves."
-      },
-      {
         "name": "Dryer",
-        "share_pct": 12,
-        "monthly_cost_sgd": 13.0,
-        "monthly_kwh": 46.0,
-        "tip": "Shift full dryer cycles to off-peak hours."
+        "share_pct": 22,
+        "monthly_cost_sgd": 24.0,
+        "monthly_kwh": 86.0,
+        "tip": "Run full loads after 11:00 PM and clean the lint filter often."
       },
       {
-        "name": "Lighting",
+        "name": "Aircon",
+        "share_pct": 28,
+        "monthly_cost_sgd": 31.5,
+        "monthly_kwh": 113.0,
+        "tip": "Use a slightly higher temperature at night."
+      },
+      {
+        "name": "Washer",
         "share_pct": 10,
-        "monthly_cost_sgd": 11.1,
+        "monthly_cost_sgd": 11.2,
         "monthly_kwh": 40.0,
-        "tip": "Turn off hallway lighting earlier on weeknights."
+        "tip": "Batch smaller weekday loads into one cycle."
       }
     ],
     "upgrade_opportunities": [
       {
-        "appliance": "Fridge",
-        "current_issue": "Overnight baseline suggests an older compressor profile.",
-        "recommended_model": "5-tick inverter fridge",
-        "annual_savings_sgd": 58.0,
-        "points_bonus": 80
+        "appliance": "Dryer",
+        "current_issue": "The current pattern suggests long heating cycles.",
+        "recommended_model": "Heat-pump dryer",
+        "annual_savings_sgd": 96.0,
+        "points_bonus": 110
       },
       {
-        "appliance": "Aircon",
-        "current_issue": "Cooling runs are longer than comparable households.",
-        "recommended_model": "Serviced inverter aircon with smart timer",
-        "annual_savings_sgd": 74.0,
-        "points_bonus": 120
+        "appliance": "Washer",
+        "current_issue": "Loads are frequent and short.",
+        "recommended_model": "Eco-mode front loader",
+        "annual_savings_sgd": 42.0,
+        "points_bonus": 65
       }
     ]
   },
   "percentile_rankings": {
-    "neighbourhood_percentile": 63,
-    "streak_days": 6,
-    "tree_status": "Thriving",
-    "points": 358,
+    "neighbourhood_percentile": 58,
+    "streak_days": 4,
+    "tree_status": "Healthy",
+    "points": 332,
     "leaderboard": [
       {
-        "alias": "HDB_Hero_99",
-        "points": 420
+        "alias": "NightSaver88",
+        "points": 401
       },
       {
         "alias": "GridGuardian",
-        "points": 396
+        "points": 386
       },
       {
         "alias": "WeiLing_EcoHome",
-        "points": 358
+        "points": 332
       }
     ],
-    "next_reward": "SGD 5 SP bill rebate at 400 points"
+    "next_reward": "NTUC voucher unlocks at 360 points"
   },
   "grid_status": {
-    "current_level": "Moderate",
-    "stress_score": 72,
-    "current_demand_mw": 6940,
-    "peak_window": "18:30-21:30",
-    "analogy": "The grid at 7:30 PM feels like the MRT at rush hour: everyone wants capacity at the same time.",
+    "current_level": "High",
+    "stress_score": 81,
+    "current_demand_mw": 7155,
+    "peak_window": "18:00-21:00",
+    "analogy": "This is the grid equivalent of a full food court at dinner rush.",
     "timeline": [
       {
         "time": "00:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "00:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "01:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "01:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "02:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "02:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "03:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "03:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "04:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "04:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "05:00",
-        "demand_mw": 5050,
+        "demand_mw": 5250,
         "stress_level": "Low"
       },
       {
         "time": "05:30",
-        "demand_mw": 5100,
+        "demand_mw": 5295,
         "stress_level": "Low"
       },
       {
         "time": "06:00",
-        "demand_mw": 5600,
+        "demand_mw": 5750,
         "stress_level": "Low"
       },
       {
         "time": "06:30",
-        "demand_mw": 5680,
-        "stress_level": "Low"
+        "demand_mw": 5815,
+        "stress_level": "Moderate"
       },
       {
         "time": "07:00",
-        "demand_mw": 5780,
-        "stress_level": "Low"
+        "demand_mw": 5950,
+        "stress_level": "Moderate"
       },
       {
         "time": "07:30",
-        "demand_mw": 5860,
+        "demand_mw": 6015,
         "stress_level": "Moderate"
       },
       {
         "time": "08:00",
-        "demand_mw": 5960,
+        "demand_mw": 6150,
         "stress_level": "Moderate"
       },
       {
         "time": "08:30",
-        "demand_mw": 6040,
+        "demand_mw": 6215,
         "stress_level": "Moderate"
       },
       {
         "time": "09:00",
-        "demand_mw": 6200,
+        "demand_mw": 6230,
         "stress_level": "Moderate"
       },
       {
         "time": "09:30",
-        "demand_mw": 6225,
-        "stress_level": "Moderate"
-      },
-      {
-        "time": "10:00",
         "demand_mw": 6255,
         "stress_level": "Moderate"
       },
       {
+        "time": "10:00",
+        "demand_mw": 6300,
+        "stress_level": "Moderate"
+      },
+      {
         "time": "10:30",
-        "demand_mw": 6280,
+        "demand_mw": 6325,
         "stress_level": "Moderate"
       },
       {
         "time": "11:00",
-        "demand_mw": 6310,
+        "demand_mw": 6370,
         "stress_level": "Moderate"
       },
       {
         "time": "11:30",
-        "demand_mw": 6335,
+        "demand_mw": 6395,
         "stress_level": "Moderate"
       },
       {
         "time": "12:00",
-        "demand_mw": 6365,
+        "demand_mw": 6440,
         "stress_level": "Moderate"
       },
       {
         "time": "12:30",
-        "demand_mw": 6390,
+        "demand_mw": 6465,
         "stress_level": "Moderate"
       },
       {
         "time": "13:00",
-        "demand_mw": 6420,
+        "demand_mw": 6510,
         "stress_level": "Moderate"
       },
       {
         "time": "13:30",
-        "demand_mw": 6445,
+        "demand_mw": 6535,
         "stress_level": "Moderate"
       },
       {
         "time": "14:00",
-        "demand_mw": 6475,
+        "demand_mw": 6580,
         "stress_level": "Moderate"
       },
       {
         "time": "14:30",
-        "demand_mw": 6500,
+        "demand_mw": 6605,
         "stress_level": "Moderate"
       },
       {
         "time": "15:00",
-        "demand_mw": 6530,
+        "demand_mw": 6650,
         "stress_level": "Moderate"
       },
       {
         "time": "15:30",
-        "demand_mw": 6555,
+        "demand_mw": 6675,
         "stress_level": "Moderate"
       },
       {
         "time": "16:00",
-        "demand_mw": 6585,
+        "demand_mw": 6720,
         "stress_level": "Moderate"
       },
       {
         "time": "16:30",
-        "demand_mw": 6610,
+        "demand_mw": 6745,
         "stress_level": "Moderate"
       },
       {
         "time": "17:00",
-        "demand_mw": 6900,
+        "demand_mw": 6700,
         "stress_level": "Moderate"
       },
       {
         "time": "17:30",
-        "demand_mw": 6940,
+        "demand_mw": 6740,
         "stress_level": "Moderate"
       },
       {
         "time": "18:00",
-        "demand_mw": 7040,
-        "stress_level": "High"
+        "demand_mw": 6865,
+        "stress_level": "Moderate"
       },
       {
         "time": "18:30",
-        "demand_mw": 7080,
-        "stress_level": "High"
+        "demand_mw": 6905,
+        "stress_level": "Moderate"
       },
       {
         "time": "19:00",
-        "demand_mw": 7180,
+        "demand_mw": 7030,
         "stress_level": "High"
       },
       {
         "time": "19:30",
-        "demand_mw": 7220,
+        "demand_mw": 7070,
         "stress_level": "High"
       },
       {
         "time": "20:00",
-        "demand_mw": 7320,
+        "demand_mw": 7195,
         "stress_level": "High"
       },
       {
         "time": "20:30",
-        "demand_mw": 7360,
+        "demand_mw": 7235,
         "stress_level": "High"
       },
       {
         "time": "21:00",
-        "demand_mw": 6100,
+        "demand_mw": 6200,
         "stress_level": "Moderate"
       },
       {
         "time": "21:30",
-        "demand_mw": 6060,
+        "demand_mw": 6170,
         "stress_level": "Moderate"
       },
       {
         "time": "22:00",
-        "demand_mw": 5910,
+        "demand_mw": 6020,
         "stress_level": "Moderate"
       },
       {
         "time": "22:30",
-        "demand_mw": 5870,
+        "demand_mw": 5990,
         "stress_level": "Moderate"
       },
       {
         "time": "23:00",
-        "demand_mw": 5720,
-        "stress_level": "Low"
+        "demand_mw": 5840,
+        "stress_level": "Moderate"
       },
       {
         "time": "23:30",
-        "demand_mw": 5680,
-        "stress_level": "Low"
+        "demand_mw": 5810,
+        "stress_level": "Moderate"
       }
     ]
   },
   "optimiser": {
-    "monthly_savings_potential_sgd": 41.0,
+    "monthly_savings_potential_sgd": 33.0,
     "recommended_actions": [
       {
         "rank": 1,
-        "title": "Enroll fully in Time-of-Use habits",
-        "savings_sgd": 18.0,
-        "difficulty": "Moderate",
-        "rationale": "Your current usage pattern still leaves savings on the table during late-evening laundry and dryer sessions.",
-        "schedule_hint": "Shift laundry, dryer, and dishwasher use after 11:00 PM."
+        "title": "Shift dryer cycles off-peak",
+        "savings_sgd": 12.0,
+        "difficulty": "Easy",
+        "rationale": "Laundry is your most flexible high-cost load.",
+        "schedule_hint": "Queue two dryer loads after 11:00 PM each week."
       },
       {
         "rank": 2,
-        "title": "Shift dryer cycles off-peak",
-        "savings_sgd": 9.0,
+        "title": "Batch washer loads",
+        "savings_sgd": 8.0,
         "difficulty": "Easy",
-        "rationale": "The dryer is one of your highest-impact appliances and is simple to reschedule.",
-        "schedule_hint": "Queue one full dryer cycle after 11:00 PM twice a week."
+        "rationale": "Fewer partial loads reduce both washer and dryer runtime.",
+        "schedule_hint": "Combine weekday laundry into larger full loads."
       },
       {
         "rank": 3,
-        "title": "Raise afternoon aircon temperature",
-        "savings_sgd": 14.0,
-        "difficulty": "Easy",
-        "rationale": "The weekday 2:00 PM spike is the clearest savings opportunity in your current routine.",
-        "schedule_hint": "Set the living-room aircon to 25C from 1:00 PM to 4:00 PM."
+        "title": "Run eco drying mode",
+        "savings_sgd": 13.0,
+        "difficulty": "Moderate",
+        "rationale": "Your current heating profile suggests the dryer runs longer than needed.",
+        "schedule_hint": "Use eco mode and high-spin washing before drying."
       }
     ],
-    "savings_report_headline": "You could save up to SGD 41 next month with three routine changes."
+    "savings_report_headline": "Laundry timing alone could free up about SGD 33 next month."
   },
-  "generated_with": "fallback",
-  "generated_at": "2026-03-07T11:43:08.951965+00:00"
+  "generated_with": "hardcoded",
+  "generated_at": "2026-03-07T11:55:20.720181+00:00",
+  "scenario_id": "laundry-night-shift",
+  "scenario_label": "Off-Peak Laundry Shift"
 }

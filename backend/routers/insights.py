@@ -1,16 +1,21 @@
-from fastapi import APIRouter
-import json
-import os
+from fastapi import APIRouter, Query
+
+from data.synthetic_data_generator import get_random_demo_payload
 
 router = APIRouter(prefix="/api/insights", tags=["insights"])
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "demo_outputs.json")
 
 @router.get("/")
-def get_insights():
-    try:
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-        return {"data": data}
-    except FileNotFoundError:
-        return {"error": "Data file not found"}
+def get_insights(refresh: bool = Query(default=False)):
+    payload = get_random_demo_payload(save=refresh)
+    return {
+        "data": {
+            "scenario_id": payload["scenario_id"],
+            "scenario_label": payload["scenario_label"],
+            "user": payload["user"],
+            "dashboard_timeseries": payload["dashboard_timeseries"],
+            "insights": payload["insights"],
+        },
+        "generated_with": payload["generated_with"],
+        "journey_date": payload["journey_date"],
+    }
