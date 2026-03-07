@@ -25,3 +25,92 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes skeleton-pulse {
+  0%   { opacity: 0.18; transform: scaleY(0.97); }
+  50%  { opacity: 0.38; transform: scaleY(1.03); }
+  100% { opacity: 0.18; transform: scaleY(0.97); }
+}
+
+@keyframes skeleton-pulse-x {
+  0%   { opacity: 0.15; transform: scaleX(0.98); }
+  50%  { opacity: 0.35; transform: scaleX(1.00); }
+  100% { opacity: 0.15; transform: scaleX(0.98); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 60s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes voucher-pop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes confetti-fly {
+  0%   { transform: translate(0, 0) rotate(0deg);   opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(var(--tr)); opacity: 0; }
+}
+
+@keyframes celebrate-ring {
+  0%   { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.voucher-reveal {
+  animation: voucher-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.confetti-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  animation: confetti-fly 0.9s ease-out forwards;
+}
+
+.celebrate-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid #00d68f;
+  animation: celebrate-ring 0.7s ease-out forwards;
+  pointer-events: none;
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+  background: #5a7090;
+  border-radius: 6px;
+}
+
+.skeleton-x {
+  animation: skeleton-pulse-x 1.6s ease-in-out infinite;
+  background: #5a7090;
+  border-radius: 6px;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #1c2535;
+  border-top-color: #00d68f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}

@@ -73,22 +73,25 @@ export default function GridPage() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
                 <Grid size={24} style={{ color: C.blue }} />
                 <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Singapore Grid</h1>
+                {loading && <div className="spinner" style={{ marginLeft: "auto" }} />}
             </div>
 
             {/* Live stats row */}
             <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
                 <div style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 16px" }}>
                     <div style={{ fontSize: 10, color: C.muted, ...mono, letterSpacing: "0.08em", marginBottom: 6 }}>DEMAND</div>
-                    <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: C.text, lineHeight: 1 }}>
-                        {loading ? "—" : `${demandMw?.toLocaleString() ?? "—"}`}
-                    </div>
+                    {loading
+                        ? <div className="skeleton-x" style={{ width: 80, height: 22, marginBottom: 6 }} />
+                        : <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: C.text, lineHeight: 1 }}>{demandMw?.toLocaleString()}</div>
+                    }
                     <div style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>MW</div>
                 </div>
-                <div style={{ flex: 1, background: C.surface, border: `1px solid ${levelColor}30`, borderRadius: 14, padding: "14px 16px" }}>
+                <div style={{ flex: 1, background: C.surface, border: `1px solid ${loading ? C.border : `${levelColor}30`}`, borderRadius: 14, padding: "14px 16px" }}>
                     <div style={{ fontSize: 10, color: C.muted, ...mono, letterSpacing: "0.08em", marginBottom: 6 }}>UTILISATION</div>
-                    <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: levelColor, lineHeight: 1 }}>
-                        {loading ? "—" : `${utilPct ?? "—"}%`}
-                    </div>
+                    {loading
+                        ? <div className="skeleton-x" style={{ width: 64, height: 22, marginBottom: 6 }} />
+                        : <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: levelColor, lineHeight: 1 }}>{utilPct}%</div>
+                    }
                     <div style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>of capacity</div>
                 </div>
             </div>
@@ -99,15 +102,13 @@ export default function GridPage() {
                     <span>⚡</span> WHAT'S HAPPENING RIGHT NOW
                 </div>
                 {loading ? (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "100%" }} />
-                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "85%" }} />
-                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "70%" }} />
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+                        <div className="skeleton-x" style={{ width: "100%", height: 13 }} />
+                        <div className="skeleton-x" style={{ width: "88%", height: 13, animationDelay: "0.15s" }} />
+                        <div className="skeleton-x" style={{ width: "72%", height: 13, animationDelay: "0.3s" }} />
                     </div>
                 ) : (
-                    <p style={{ fontSize: 14, color: C.text, lineHeight: 1.75, margin: "0 0 16px" }}>
-                        {summary}
-                    </p>
+                    <p style={{ fontSize: 14, color: C.text, lineHeight: 1.75, margin: "0 0 16px" }}>{summary}</p>
                 )}
                 <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
                     <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
@@ -125,14 +126,27 @@ export default function GridPage() {
             <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
                     <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: C.muted, ...mono }}>NATIONAL GRID · LIVE</span>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, background: `${levelColor}10`, border: `1px solid ${levelColor}20`, padding: "4px 12px", borderRadius: 99 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: levelColor, boxShadow: `0 0 6px ${levelColor}` }} />
-                        <span style={{ fontSize: 11, fontWeight: 700, color: levelColor }}>{level}</span>
-                    </div>
+                    {loading ? (
+                        <div className="skeleton-x" style={{ width: 70, height: 24, borderRadius: 99 }} />
+                    ) : (
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, background: `${levelColor}10`, border: `1px solid ${levelColor}20`, padding: "4px 12px", borderRadius: 99 }}>
+                            <div style={{ width: 8, height: 8, borderRadius: "50%", background: levelColor, boxShadow: `0 0 6px ${levelColor}` }} />
+                            <span style={{ fontSize: 11, fontWeight: 700, color: levelColor }}>{level}</span>
+                        </div>
+                    )}
                 </div>
 
                 {loading ? (
-                    <div style={{ height: 100, background: `${C.dim}40`, borderRadius: 8, marginBottom: 8 }} />
+                    <div style={{ height: 100, marginBottom: 8, position: "relative", borderRadius: 8, overflow: "hidden" }}>
+                        {/* Fake area chart outline skeleton */}
+                        <svg width="100%" height="100" viewBox="0 0 380 100" preserveAspectRatio="none">
+                            <path d="M 0,80 C 40,75 80,60 120,50 C 160,40 200,55 240,45 C 280,35 320,25 380,30 L 380,100 L 0,100 Z"
+                                className="skeleton" style={{ fill: "#5a7090", animation: "skeleton-pulse 1.6s ease-in-out infinite" }} />
+                            <path d="M 0,80 C 40,75 80,60 120,50 C 160,40 200,55 240,45 C 280,35 320,25 380,30"
+                                fill="none" stroke="#5a7090" strokeWidth="2"
+                                style={{ opacity: 0.3, animation: "skeleton-pulse 1.6s ease-in-out infinite" }} />
+                        </svg>
+                    </div>
                 ) : (
                     <div style={{ height: 100, marginBottom: 8, overflow: "hidden" }}>
                         <AreaChart data={timeline} />
@@ -145,10 +159,16 @@ export default function GridPage() {
                     <span>NOW</span>
                 </div>
 
-                {peakWindow !== "—" && (
+                {!loading && peakWindow !== "—" && (
                     <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", fontSize: 12 }}>
                         <span style={{ color: C.muted }}>Peak window</span>
                         <span style={{ color: C.amber, fontWeight: 700, ...mono }}>{peakWindow}</span>
+                    </div>
+                )}
+                {loading && (
+                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between" }}>
+                        <div className="skeleton-x" style={{ width: 80, height: 12 }} />
+                        <div className="skeleton-x" style={{ width: 60, height: 12 }} />
                     </div>
                 )}
             </div>
