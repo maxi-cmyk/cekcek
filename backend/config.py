@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     clickhouse_port: int = 8443
     clickhouse_user: str = "default"
     clickhouse_password: str
-    clickhouse_database: str = "sp_energy_pulse"
+    clickhouse_database: str = "cekcek"
     
     openai_api_key: str
 
