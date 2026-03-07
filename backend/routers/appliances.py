@@ -5,8 +5,11 @@ from data.synthetic_data_generator import get_random_demo_payload
 router = APIRouter(prefix="/api/appliances", tags=["appliances"])
 
 @router.get("/")
-def get_appliances(refresh: bool = Query(default=False)):
-    payload = get_random_demo_payload(save=refresh)
+def get_appliances(
+    refresh: bool = Query(default=False),
+    force_fallback: bool = Query(default=False),
+):
+    payload = get_random_demo_payload(save=refresh, force_fallback=force_fallback)
     appliance_data = payload["disaggregation_attributions"]
     return {
         "appliances": appliance_data["top_appliances"],

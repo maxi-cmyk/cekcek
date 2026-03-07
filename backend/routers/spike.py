@@ -5,8 +5,11 @@ from data.synthetic_data_generator import get_random_demo_payload
 router = APIRouter(prefix="/api/spike", tags=["spike"])
 
 @router.get("/")
-def get_spike_events(refresh: bool = Query(default=False)):
-    payload = get_random_demo_payload(save=refresh)
+def get_spike_events(
+    refresh: bool = Query(default=False),
+    force_fallback: bool = Query(default=False),
+):
+    payload = get_random_demo_payload(save=refresh, force_fallback=force_fallback)
     spike_events = payload["spike_events"]
     return {
         "spike_events": spike_events,

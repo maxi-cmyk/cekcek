@@ -5,8 +5,11 @@ from data.synthetic_data_generator import get_random_demo_payload
 router = APIRouter(prefix="/api/optimiser", tags=["optimiser"])
 
 @router.get("/")
-def get_optimiser_status(refresh: bool = Query(default=False)):
-    payload = get_random_demo_payload(save=refresh)
+def get_optimiser_status(
+    refresh: bool = Query(default=False),
+    force_fallback: bool = Query(default=False),
+):
+    payload = get_random_demo_payload(save=refresh, force_fallback=force_fallback)
     optimiser = payload["optimiser"]
     return {
         "status": "active",

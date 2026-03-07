@@ -5,8 +5,11 @@ from data.synthetic_data_generator import get_random_demo_payload
 router = APIRouter(prefix="/api/gamification", tags=["gamification"])
 
 @router.get("/")
-def get_gamification(refresh: bool = Query(default=False)):
-    payload = get_random_demo_payload(save=refresh)
+def get_gamification(
+    refresh: bool = Query(default=False),
+    force_fallback: bool = Query(default=False),
+):
+    payload = get_random_demo_payload(save=refresh, force_fallback=force_fallback)
     gamification = payload["percentile_rankings"]
     return {
         "points": gamification["points"],
