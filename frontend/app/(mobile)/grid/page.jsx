@@ -11,21 +11,23 @@ const C = {
 };
 const mono = { fontFamily: "'JetBrains Mono', 'Fira Code', monospace" };
 
-// Simple SVG area chart — no recharts needed
+// SVG area chart using utilisation_pct from real ClickHouse data
 function AreaChart({ data }) {
     if (!data || data.length === 0) return null;
     const W = 380, H = 100;
-    const values = data.map(d => d.demand_mw);
+    const values = data.map(d => d.utilisation_pct);
     const minV = Math.min(...values);
     const maxV = Math.max(...values);
     const range = maxV - minV || 1;
 
     const pts = data.map((d, i) => {
         const x = (i / (data.length - 1)) * W;
-        const y = H - ((d.demand_mw - minV) / range) * (H - 10) - 5;
+        const y = H - ((d.utilisation_pct - minV) / range) * (H - 10) - 5;
         return `${x},${y}`;
     });
 
+    // Colour the line red in high-util zones
+    const lineColor = maxV >= 65 ? "#ff4757" : maxV >= 52 ? "#ffb347" : "#00d68f";
     const linePath = `M ${pts.join(" L ")}`;
     const areaPath = `M 0,${H} L ${pts.join(" L ")} L ${W},${H} Z`;
 
@@ -33,12 +35,12 @@ function AreaChart({ data }) {
         <svg width="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display: "block" }}>
             <defs>
                 <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00d68f" stopOpacity="0.3" />
-                    <stop offset="95%" stopColor="#00d68f" stopOpacity="0" />
+                    <stop offset="5%" stopColor={lineColor} stopOpacity="0.3" />
+                    <stop offset="95%" stopColor={lineColor} stopOpacity="0" />
                 </linearGradient>
             </defs>
             <path d={areaPath} fill="url(#areaGrad)" />
-            <path d={linePath} fill="none" stroke="#00d68f" strokeWidth="2" />
+            <path d={linePath} fill="none" stroke={lineColor} strokeWidth="2" />
         </svg>
     );
 }
@@ -47,18 +49,23 @@ export default function GridPage() {
     const [gridStatus, setGridStatus] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
+    const [timeline, setTimeline] = useState([]);
+
     useEffect(() => {
         fetchGrid().catch(() => null).then(data => {
             if (data?.grid_status) setGridStatus(data.grid_status);
+            if (data?.timeline) setTimeline(data.timeline);
             setLoading(false);
         });
     }, []);
 
     const level = gridStatus?.current_level ?? "—";
     const levelColor = level === "High" ? C.red : level === "Moderate" ? C.amber : C.green;
-    const analogy = gridStatus?.analogy ?? "The grid is like a city's power highway — when demand peaks, everyone feels the slowdown.";
-    const timeline = gridStatus?.timeline ?? [];
     const peakWindow = gridStatus?.peak_window ?? "—";
+    const demandMw = gridStatus?.demand_mw;
+    const utilPct = gridStatus?.stress_score;
+    const summary = gridStatus?.summary ?? null;
 
     return (
         <div style={{ padding: "20px", color: C.text, fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}>
@@ -68,18 +75,40 @@ export default function GridPage() {
                 <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Singapore Grid</h1>
             </div>
 
-            {/* Analogy Card */}
-            <div style={{ background: `${C.green}08`, border: `1px solid ${C.green}20`, borderRadius: 16, padding: 20, marginBottom: 16, boxShadow: `0 0 30px rgba(0,214,143,0.03)` }}>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: C.green, ...mono, marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
-                    <span>🚇</span> WHY DOES THIS MATTER?
+            {/* Live stats row */}
+            <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+                <div style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "14px 16px" }}>
+                    <div style={{ fontSize: 10, color: C.muted, ...mono, letterSpacing: "0.08em", marginBottom: 6 }}>DEMAND</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: C.text, lineHeight: 1 }}>
+                        {loading ? "—" : `${demandMw?.toLocaleString() ?? "—"}`}
+                    </div>
+                    <div style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>MW</div>
                 </div>
-                <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 16, margin: "0 0 16px" }}>
-                    {analogy}
-                </p>
-                <p style={{ fontSize: 15, color: C.green, fontWeight: 700, lineHeight: 1.6, margin: "0 0 16px" }}>
-                    An overloaded train wears out faster — so does the grid.
-                    <br /><span style={{ color: C.muted, fontWeight: 400, fontSize: 14 }}>Those repairs appear on everyone's electricity bill.</span>
-                </p>
+                <div style={{ flex: 1, background: C.surface, border: `1px solid ${levelColor}30`, borderRadius: 14, padding: "14px 16px" }}>
+                    <div style={{ fontSize: 10, color: C.muted, ...mono, letterSpacing: "0.08em", marginBottom: 6 }}>UTILISATION</div>
+                    <div style={{ fontSize: 22, fontWeight: 900, ...mono, color: levelColor, lineHeight: 1 }}>
+                        {loading ? "—" : `${utilPct ?? "—"}%`}
+                    </div>
+                    <div style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>of capacity</div>
+                </div>
+            </div>
+
+            {/* AI Summary Card */}
+            <div style={{ background: `${C.green}08`, border: `1px solid ${C.green}20`, borderRadius: 16, padding: 20, marginBottom: 16 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: C.green, ...mono, marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>⚡</span> WHAT'S HAPPENING RIGHT NOW
+                </div>
+                {loading ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "100%" }} />
+                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "85%" }} />
+                        <div style={{ height: 14, borderRadius: 4, background: `${C.muted}22`, width: "70%" }} />
+                    </div>
+                ) : (
+                    <p style={{ fontSize: 14, color: C.text, lineHeight: 1.75, margin: "0 0 16px" }}>
+                        {summary}
+                    </p>
+                )}
                 <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
                     <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
                         <span style={{ fontSize: 16 }}>🌍</span>
