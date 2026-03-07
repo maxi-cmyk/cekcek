@@ -20,10 +20,10 @@ export default function MobileShell({ children }) {
             style={{ fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}>
 
             <div style={{
-                width: "100%", maxWidth: 420,
-                height: 850,
+                width: "100%", maxWidth: 414,
+                height: 896,
                 background: "#07090f",
-                borderRadius: 40,
+                borderRadius: 50,
                 border: "2px solid #1a2535",
                 boxShadow: "0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px #0a0f1a, inset 0 1px 0 #1e2d45",
                 overflow: "hidden",

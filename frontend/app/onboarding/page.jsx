@@ -778,15 +778,16 @@ export default function OnboardingPage() {
             padding: "24px 16px",
             fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif",
         }}>
-            <div style={{ width: "100%", maxWidth: 420 }}>
+            <div style={{ width: "100%", maxWidth: 414 }}>
                 {/* phone shell */}
                 <div style={{
                     background: C.bg,
-                    borderRadius: 40,
+                    borderRadius: 50,
                     border: "2px solid #1a2535",
                     boxShadow: "0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px #0a0f1a, inset 0 1px 0 #1e2d45",
                     overflow: "hidden",
                     display: "flex", flexDirection: "column",
+                    height: 896,
                 }}>
                     {/* status bar */}
                     <div style={{
@@ -838,7 +839,7 @@ export default function OnboardingPage() {
                     )}
 
                     {/* scrollable content */}
-                    <div ref={scrollRef} style={{ padding: "20px 22px", overflowY: "auto", maxHeight: 540 }}>
+                    <div ref={scrollRef} style={{ padding: "20px 22px", overflowY: "auto", flex: 1 }}>
                         {isStory && storySlides.map(({ comp: Comp }, i) => (
                             <div key={i} style={{ display: slide === i ? "block" : "none" }}>
                                 <Comp visible={slide === i} />

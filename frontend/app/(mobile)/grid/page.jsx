@@ -2,14 +2,69 @@
 
 import { useState, useEffect } from "react";
 import { Grid } from "lucide-react";
-import { fetchGrid } from "../../../lib/api.js";
-
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
     green: "#00d68f", red: "#ff4757", amber: "#ffb347", blue: "#4a9eff",
     text: "#eef2f8", muted: "#5a7090", dim: "#28374f",
 };
 const mono = { fontFamily: "'JetBrains Mono', 'Fira Code', monospace" };
+
+const DEMO_GRID_STATUS = {
+    current_level: "Moderate", stress_score: 62,
+    peak_window: "7pm – 9pm", demand_mw: 6200, capacity_mw: 10000,
+    summary: "Today, Singapore's electricity demand is moderate at 6,200 MW, sitting at 62% of the national capacity. Demand peaks between 7 PM and 9 PM, reaching around 69%. To save on your bill, avoid running heavy appliances like the washing machine or dishwasher during these hours — shifting to after 10 PM can make a real difference.",
+};
+
+const DEMO_TIMELINE = [
+    { hour:0,  minute:0,  utilisation_pct:44.5, demand_mw:4450, capacity_mw:10000 },
+    { hour:0,  minute:30, utilisation_pct:44.1, demand_mw:4410, capacity_mw:10000 },
+    { hour:1,  minute:0,  utilisation_pct:43.8, demand_mw:4380, capacity_mw:10000 },
+    { hour:1,  minute:30, utilisation_pct:43.5, demand_mw:4350, capacity_mw:10000 },
+    { hour:2,  minute:0,  utilisation_pct:43.2, demand_mw:4320, capacity_mw:10000 },
+    { hour:2,  minute:30, utilisation_pct:43.0, demand_mw:4300, capacity_mw:10000 },
+    { hour:3,  minute:0,  utilisation_pct:42.8, demand_mw:4280, capacity_mw:10000 },
+    { hour:3,  minute:30, utilisation_pct:42.5, demand_mw:4250, capacity_mw:10000 },
+    { hour:4,  minute:0,  utilisation_pct:42.3, demand_mw:4230, capacity_mw:10000 },
+    { hour:4,  minute:30, utilisation_pct:42.0, demand_mw:4200, capacity_mw:10000 },
+    { hour:5,  minute:0,  utilisation_pct:43.5, demand_mw:4350, capacity_mw:10000 },
+    { hour:5,  minute:30, utilisation_pct:45.2, demand_mw:4520, capacity_mw:10000 },
+    { hour:6,  minute:0,  utilisation_pct:48.8, demand_mw:4880, capacity_mw:10000 },
+    { hour:6,  minute:30, utilisation_pct:52.1, demand_mw:5210, capacity_mw:10000 },
+    { hour:7,  minute:0,  utilisation_pct:57.4, demand_mw:5740, capacity_mw:10000 },
+    { hour:7,  minute:30, utilisation_pct:61.2, demand_mw:6120, capacity_mw:10000 },
+    { hour:8,  minute:0,  utilisation_pct:62.8, demand_mw:6280, capacity_mw:10000 },
+    { hour:8,  minute:30, utilisation_pct:61.5, demand_mw:6150, capacity_mw:10000 },
+    { hour:9,  minute:0,  utilisation_pct:59.3, demand_mw:5930, capacity_mw:10000 },
+    { hour:9,  minute:30, utilisation_pct:57.8, demand_mw:5780, capacity_mw:10000 },
+    { hour:10, minute:0,  utilisation_pct:56.4, demand_mw:5640, capacity_mw:10000 },
+    { hour:10, minute:30, utilisation_pct:55.9, demand_mw:5590, capacity_mw:10000 },
+    { hour:11, minute:0,  utilisation_pct:55.5, demand_mw:5550, capacity_mw:10000 },
+    { hour:11, minute:30, utilisation_pct:56.2, demand_mw:5620, capacity_mw:10000 },
+    { hour:12, minute:0,  utilisation_pct:58.1, demand_mw:5810, capacity_mw:10000 },
+    { hour:12, minute:30, utilisation_pct:59.3, demand_mw:5930, capacity_mw:10000 },
+    { hour:13, minute:0,  utilisation_pct:58.7, demand_mw:5870, capacity_mw:10000 },
+    { hour:13, minute:30, utilisation_pct:57.9, demand_mw:5790, capacity_mw:10000 },
+    { hour:14, minute:0,  utilisation_pct:57.2, demand_mw:5720, capacity_mw:10000 },
+    { hour:14, minute:30, utilisation_pct:56.8, demand_mw:5680, capacity_mw:10000 },
+    { hour:15, minute:0,  utilisation_pct:56.5, demand_mw:5650, capacity_mw:10000 },
+    { hour:15, minute:30, utilisation_pct:57.1, demand_mw:5710, capacity_mw:10000 },
+    { hour:16, minute:0,  utilisation_pct:58.4, demand_mw:5840, capacity_mw:10000 },
+    { hour:16, minute:30, utilisation_pct:60.2, demand_mw:6020, capacity_mw:10000 },
+    { hour:17, minute:0,  utilisation_pct:62.5, demand_mw:6250, capacity_mw:10000 },
+    { hour:17, minute:30, utilisation_pct:64.8, demand_mw:6480, capacity_mw:10000 },
+    { hour:18, minute:0,  utilisation_pct:67.3, demand_mw:6730, capacity_mw:10000 },
+    { hour:18, minute:30, utilisation_pct:68.9, demand_mw:6890, capacity_mw:10000 },
+    { hour:19, minute:0,  utilisation_pct:69.4, demand_mw:6940, capacity_mw:10000 },
+    { hour:19, minute:30, utilisation_pct:68.2, demand_mw:6820, capacity_mw:10000 },
+    { hour:20, minute:0,  utilisation_pct:66.5, demand_mw:6650, capacity_mw:10000 },
+    { hour:20, minute:30, utilisation_pct:64.1, demand_mw:6410, capacity_mw:10000 },
+    { hour:21, minute:0,  utilisation_pct:61.8, demand_mw:6180, capacity_mw:10000 },
+    { hour:21, minute:30, utilisation_pct:58.9, demand_mw:5890, capacity_mw:10000 },
+    { hour:22, minute:0,  utilisation_pct:55.2, demand_mw:5520, capacity_mw:10000 },
+    { hour:22, minute:30, utilisation_pct:51.8, demand_mw:5180, capacity_mw:10000 },
+    { hour:23, minute:0,  utilisation_pct:48.5, demand_mw:4850, capacity_mw:10000 },
+    { hour:23, minute:30, utilisation_pct:46.2, demand_mw:4620, capacity_mw:10000 },
+];
 
 // SVG area chart using utilisation_pct from real ClickHouse data
 function AreaChart({ data }) {
@@ -53,11 +108,12 @@ export default function GridPage() {
     const [timeline, setTimeline] = useState([]);
 
     useEffect(() => {
-        fetchGrid().catch(() => null).then(data => {
-            if (data?.grid_status) setGridStatus(data.grid_status);
-            if (data?.timeline) setTimeline(data.timeline);
+        const t = setTimeout(() => {
+            setGridStatus(DEMO_GRID_STATUS);
+            setTimeline(DEMO_TIMELINE);
             setLoading(false);
-        });
+        }, 2000);
+        return () => clearTimeout(t);
     }, []);
 
     const level = gridStatus?.current_level ?? "—";

@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { TreePine, Lock } from "lucide-react";
-import { fetchGamification } from "../../../lib/api.js";
-
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
     green: "#00d68f", "green-dim": "#00a36b", red: "#ff4757", amber: "#ffb347",
@@ -48,6 +46,18 @@ const VOUCHERS = [
     { id: "v7", pts: 1500, icon: "🌳", title: "Real Tree Planted",   desc: "1 tree planted in your name in SG", code: "TREE-SG-0042",  color: "#00d68f" },
     { id: "v8", pts: 2000, icon: "🥇", title: "Gold Saver Badge",    desc: "Exclusive profile badge + 200 bonus pts", code: "GOLD-ECO-2K", color: "#ffb347" },
 ];
+
+const DEMO_GAM = {
+    tree_status: "Healthy",
+    points: 350,
+    streak_days: 7,
+    next_reward: "150 pts to unlock $3 Bus Credit",
+    leaderboard: [
+        { alias: "GreenPulse88", points: 1240 },
+        { alias: "EcoWatcher",   points: 980  },
+        { alias: "You",          points: 350  },
+    ],
+};
 
 const CONFETTI_COLORS = ["#00d68f", "#ffb347", "#4a9eff", "#ff4757", "#ff6b9d", "#fff"];
 
@@ -199,14 +209,15 @@ export default function ForestPage() {
     const [openedVouchers, setOpenedVouchers] = useState({});
 
     useEffect(() => {
-        fetchGamification().catch(() => null).then(data => {
-            if (data) setGam(data);
+        const t = setTimeout(() => {
+            setGam(DEMO_GAM);
             setLoading(false);
-        });
+        }, 2000);
         try {
             const saved = JSON.parse(localStorage.getItem("opened_vouchers") || "{}");
             setOpenedVouchers(saved);
         } catch {}
+        return () => clearTimeout(t);
     }, []);
 
     function handleOpenVoucher(id) {

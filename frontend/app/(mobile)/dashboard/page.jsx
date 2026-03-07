@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Building, Flame } from "lucide-react";
-import { fetchInsights, fetchSpike, fetchGrid, fetchGamification, fetchConsumption } from "../../../lib/api.js";
+import { Building, Flame, HelpCircle, X } from "lucide-react";
 
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
@@ -11,6 +10,128 @@ const C = {
     text: "#eef2f8", muted: "#5a7090", dim: "#28374f",
 };
 const mono = { fontFamily: "'JetBrains Mono', 'Fira Code', monospace" };
+
+const DEMO_CONSUMPTION = [
+    { hour:0,  minute:0,  kwh:0.135 }, { hour:0,  minute:30, kwh:0.132 },
+    { hour:1,  minute:0,  kwh:0.120 }, { hour:1,  minute:30, kwh:0.115 },
+    { hour:2,  minute:0,  kwh:0.110 }, { hour:2,  minute:30, kwh:0.108 },
+    { hour:3,  minute:0,  kwh:0.105 }, { hour:3,  minute:30, kwh:0.102 },
+    { hour:4,  minute:0,  kwh:0.100 }, { hour:4,  minute:30, kwh:0.098 },
+    { hour:5,  minute:0,  kwh:0.115 }, { hour:5,  minute:30, kwh:0.130 },
+    { hour:6,  minute:0,  kwh:0.210 }, { hour:6,  minute:30, kwh:0.280 },
+    { hour:7,  minute:0,  kwh:0.520 }, { hour:7,  minute:30, kwh:0.610 },
+    { hour:8,  minute:0,  kwh:0.580 }, { hour:8,  minute:30, kwh:0.490 },
+    { hour:9,  minute:0,  kwh:0.350 }, { hour:9,  minute:30, kwh:0.310 },
+    { hour:10, minute:0,  kwh:0.290 }, { hour:10, minute:30, kwh:0.275 },
+    { hour:11, minute:0,  kwh:0.260 }, { hour:11, minute:30, kwh:0.255 },
+    { hour:12, minute:0,  kwh:0.310 }, { hour:12, minute:30, kwh:0.340 },
+    { hour:13, minute:0,  kwh:0.370 }, { hour:13, minute:30, kwh:0.350 },
+    { hour:14, minute:0,  kwh:0.640 }, { hour:14, minute:30, kwh:0.680 },
+    { hour:15, minute:0,  kwh:0.720 }, { hour:15, minute:30, kwh:0.700 },
+    { hour:16, minute:0,  kwh:0.690 }, { hour:16, minute:30, kwh:0.650 },
+    { hour:17, minute:0,  kwh:0.420 }, { hour:17, minute:30, kwh:0.380 },
+    { hour:18, minute:0,  kwh:0.750 }, { hour:18, minute:30, kwh:0.820 },
+    { hour:19, minute:0,  kwh:0.890 }, { hour:19, minute:30, kwh:0.860 },
+    { hour:20, minute:0,  kwh:0.810 }, { hour:20, minute:30, kwh:0.760 },
+    { hour:21, minute:0,  kwh:0.620 }, { hour:21, minute:30, kwh:0.550 },
+    { hour:22, minute:0,  kwh:0.380 }, { hour:22, minute:30, kwh:0.290 },
+    { hour:23, minute:0,  kwh:0.210 }, { hour:23, minute:30, kwh:0.178 },
+];
+
+const ANOMALY_SLOTS = [
+    { t: "12PM", hot: false }, { t: "1PM", hot: false }, { t: "2PM", hot: true },
+    { t: "3PM", hot: true  }, { t: "4PM", hot: true  }, { t: "5PM", hot: true },
+    { t: "6PM", hot: false }, { t: "7PM", hot: true  }, { t: "8PM", hot: true },
+];
+
+function AnomalyCard() {
+    return (
+        <div style={{ background: "#0e1219", border: "1px solid #1c2535", borderRadius: 16, overflow: "hidden", marginBottom: 16 }}>
+            {/* banner */}
+            <div style={{ background: "linear-gradient(135deg, #ffb34722, #ffb34711)", borderBottom: "1px solid #ffb34733", padding: "10px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 18 }}>🔍</span>
+                <div>
+                    <div style={{ color: "#ffb347", fontWeight: 800, fontSize: 13 }}>Anomaly detected · Weekdays 2–6 PM</div>
+                    <div style={{ color: "#5a7090", fontSize: 11 }}>Pattern identified across 18 consecutive weekdays</div>
+                </div>
+            </div>
+            <div style={{ padding: "14px 16px" }}>
+                {/* heatmap */}
+                <div style={{ color: "#5a7090", fontSize: 10, fontFamily: "'JetBrains Mono',monospace", marginBottom: 8 }}>YOUR WEEKDAY USAGE PATTERN</div>
+                <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
+                    {ANOMALY_SLOTS.map((s, i) => (
+                        <div key={i} style={{ flex: 1 }}>
+                            <div style={{
+                                height: 28, borderRadius: 4,
+                                background: s.hot ? "linear-gradient(180deg, #ffb347, #ffb34766)" : "#5a709022",
+                                border: s.hot ? "1px solid #ffb34766" : "none",
+                                boxShadow: s.hot ? "0 0 6px #ffb34744" : "none",
+                            }} />
+                            <div style={{ color: "#5a7090", fontSize: 8, textAlign: "center", marginTop: 3, fontFamily: "'JetBrains Mono',monospace" }}>{s.t}</div>
+                        </div>
+                    ))}
+                </div>
+                <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 14 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: 2, background: "#ffb347" }} />
+                    <span style={{ color: "#5a7090", fontSize: 11 }}>Aircon running · no occupancy detected</span>
+                </div>
+                {/* appliance */}
+                <div style={{ display: "flex", gap: 12, alignItems: "center", paddingTop: 12, borderTop: "1px solid #1c2535" }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 12, background: "#ffb34718", border: "1px solid #ffb34744", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>❄️</div>
+                    <div>
+                        <div style={{ color: "#eef2f8", fontWeight: 800, fontSize: 15 }}>Air Conditioner</div>
+                        <div style={{ color: "#5a7090", fontSize: 12 }}>Bedroom unit · 4 hrs/day unoccupied</div>
+                        <div style={{ color: "#ffb347", fontSize: 12, fontWeight: 700, marginTop: 2 }}>Confidence: 94%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function AnalogyCard() {
+    return (
+        <div style={{ background: "#ff475708", border: "1px solid #ff475722", borderRadius: 14, padding: "14px 16px", marginBottom: 16, display: "flex", gap: 14, alignItems: "center" }}>
+            <span style={{ fontSize: 32, flexShrink: 0 }}>🧋</span>
+            <div>
+                <div style={{ color: "#ff4757", fontWeight: 800, fontSize: 14 }}>That's 18 bubble teas — wasted every month</div>
+                <div style={{ color: "#5a7090", fontSize: 12, marginTop: 4, lineHeight: 1.5 }}>$0.60/day × 30 days = $18/month on an empty room</div>
+            </div>
+        </div>
+    );
+}
+
+function TOUCard() {
+    const [showInfo, setShowInfo] = useState(false);
+    return (
+        <div style={{ background: "#4a9eff0d", border: "1px solid #4a9eff22", borderRadius: 14, padding: "12px 14px", marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: showInfo ? 10 : 12 }}>
+                <div style={{ color: "#4a9eff", fontSize: 11, fontFamily: "'JetBrains Mono',monospace" }}>OFF-PEAK RATE (TOU PLAN)</div>
+                <button onClick={() => setShowInfo(v => !v)} style={{ background: "none", border: "none", cursor: "pointer", padding: 2, color: showInfo ? "#4a9eff" : "#5a7090", display: "flex", alignItems: "center" }}>
+                    {showInfo ? <X size={16} /> : <HelpCircle size={16} />}
+                </button>
+            </div>
+            {showInfo && (
+                <div style={{ background: "#4a9eff12", border: "1px solid #4a9eff25", borderRadius: 10, padding: "10px 12px", marginBottom: 12, fontSize: 12, color: "#5a7090", lineHeight: 1.6 }}>
+                    <span style={{ color: "#eef2f8", fontWeight: 700 }}>Time-of-Use (TOU)</span> is a pricing plan where electricity costs more during peak hours (7–9am & 6–10pm) and less off-peak. By shifting usage to off-peak slots — like running your washing machine at night — you can cut your bill significantly.
+                </div>
+            )}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 8 }}>
+                <div style={{ background: "#ff475711", borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ color: "#5a7090", fontSize: 9, fontFamily: "'JetBrains Mono',monospace" }}>PEAK</div>
+                    <div style={{ color: "#ff4757", fontSize: 18, fontWeight: 900, fontFamily: "'JetBrains Mono',monospace" }}>$0.45</div>
+                    <div style={{ color: "#5a7090", fontSize: 9 }}>per kWh</div>
+                </div>
+                <div style={{ color: "#5a7090", fontSize: 18 }}>→</div>
+                <div style={{ background: "#00d68f11", borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ color: "#5a7090", fontSize: 9, fontFamily: "'JetBrains Mono',monospace" }}>OFF-PEAK</div>
+                    <div style={{ color: "#00d68f", fontSize: 18, fontWeight: 900, fontFamily: "'JetBrains Mono',monospace" }}>$0.19</div>
+                    <div style={{ color: "#5a7090", fontSize: 9 }}>per kWh</div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function DashboardPage() {
     const router = useRouter();
@@ -21,18 +142,13 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Promise.all([
-            fetchConsumption().catch(() => null),
-            fetchSpike().catch(() => null),
-            fetchGrid().catch(() => null),
-            fetchGamification().catch(() => null),
-        ]).then(([cons, spk, grd, gam]) => {
-            if (cons?.rows?.length) setConsumption(cons.rows);
-            if (spk?.latest) setSpike(spk.latest);
-            if (grd?.grid_status) setGrid(grd.grid_status);
-            if (gam) setGamification(gam);
+        const t = setTimeout(() => {
+            setConsumption(DEMO_CONSUMPTION);
+            setGrid({ current_level: "Moderate", stress_score: 62 });
+            setGamification({ streak_days: 7 });
             setLoading(false);
-        });
+        }, 2000);
+        return () => clearTimeout(t);
     }, []);
 
     // One bar per hour (average the two 30-min slots)
@@ -186,6 +302,15 @@ export default function DashboardPage() {
                     View<br />Forest
                 </button>
             </div>
+
+            {/* Anomaly Detected */}
+            <AnomalyCard />
+
+            {/* Bubble Tea Analogy */}
+            <AnalogyCard />
+
+            {/* TOU Plan */}
+            <TOUCard />
         </div>
     );
 }
