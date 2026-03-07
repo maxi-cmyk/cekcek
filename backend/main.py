@@ -8,6 +8,7 @@ from routers import (
     grid,
     appliances,
     gamification,
+    consumptionApi,
 )
 
 app = FastAPI(title="Demo Backend API")
@@ -27,6 +28,7 @@ app.include_router(forecast.router)
 app.include_router(grid.router)
 app.include_router(appliances.router)
 app.include_router(gamification.router)
+app.include_router(consumptionApi.router)
 
 @app.get("/")
 def read_root():

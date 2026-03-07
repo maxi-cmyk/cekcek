@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Building, Flame } from "lucide-react";
-import { fetchInsights, fetchSpike, fetchGrid, fetchGamification } from "../../../lib/api.js";
+import { fetchInsights, fetchSpike, fetchGrid, fetchGamification, fetchConsumption } from "../../../lib/api.js";
 
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
@@ -14,7 +14,7 @@ const mono = { fontFamily: "'JetBrains Mono', 'Fira Code', monospace" };
 
 export default function DashboardPage() {
     const router = useRouter();
-    const [timeseries, setTimeseries] = useState([]);
+    const [consumption, setConsumption] = useState([]);
     const [spike, setSpike] = useState(null);
     const [grid, setGrid] = useState(null);
     const [gamification, setGamification] = useState(null);
@@ -22,12 +22,12 @@ export default function DashboardPage() {
 
     useEffect(() => {
         Promise.all([
-            fetchInsights().catch(() => null),
+            fetchConsumption().catch(() => null),
             fetchSpike().catch(() => null),
             fetchGrid().catch(() => null),
             fetchGamification().catch(() => null),
-        ]).then(([ins, spk, grd, gam]) => {
-            if (ins?.data?.dashboard_timeseries) setTimeseries(ins.data.dashboard_timeseries);
+        ]).then(([cons, spk, grd, gam]) => {
+            if (cons?.rows?.length) setConsumption(cons.rows);
             if (spk?.latest) setSpike(spk.latest);
             if (grd?.grid_status) setGrid(grd.grid_status);
             if (gam) setGamification(gam);
@@ -35,9 +35,14 @@ export default function DashboardPage() {
         });
     }, []);
 
-    // Compute bar heights — use every 2nd slot (24 bars for better display)
-    const bars = timeseries.filter((_, i) => i % 2 === 0);
-    const maxKwh = bars.length ? Math.max(...bars.map(b => b.kwh)) : 1;
+    // One bar per hour (average the two 30-min slots)
+    const bars = Array.from({ length: 24 }, (_, h) => {
+        const slots = consumption.filter(r => r.hour === h);
+        const kwh = slots.length ? slots.reduce((s, r) => s + r.kwh, 0) / slots.length : 0;
+        return { hour: h, kwh, label: h === 0 ? "12am" : h === 12 ? "12pm" : h < 12 ? `${h}am` : `${h - 12}pm` };
+    });
+    const maxKwh = Math.max(...bars.map(b => b.kwh), 0.01);
+    const totalKwh = consumption.reduce((s, r) => s + r.kwh, 0);
 
     const gridColor = grid?.current_level === "High" ? C.red : grid?.current_level === "Moderate" ? C.amber : C.green;
     const gridLabel = grid ? `${grid.current_level} — ${grid.stress_score}% load` : "Loading…";
@@ -48,7 +53,14 @@ export default function DashboardPage() {
             {/* Today's Usage */}
             <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, marginBottom: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-                    <span style={{ fontWeight: 700, fontSize: 15 }}>Today's Usage</span>
+                    <div>
+                        <span style={{ fontWeight: 700, fontSize: 15 }}>Today's Usage</span>
+                        {!loading && totalKwh > 0 && (
+                            <span style={{ marginLeft: 10, fontSize: 13, color: C.green, fontWeight: 700, ...mono }}>
+                                {totalKwh.toFixed(2)} kWh
+                            </span>
+                        )}
+                    </div>
                     <div style={{ background: "#0a0f18", padding: 4, borderRadius: 8, border: `1px solid ${C.border}` }}>
                         <span style={{ padding: "4px 12px", borderRadius: 6, fontSize: 11, fontWeight: 700, background: `${C.green}20`, color: C.green, border: `1px solid ${C.green}30` }}>day</span>
                     </div>
@@ -58,34 +70,47 @@ export default function DashboardPage() {
                 <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 96, marginBottom: 8 }}>
                     {loading ? (
                         Array.from({ length: 24 }).map((_, i) => (
-                            <div key={i} style={{ flex: 1, height: "30%", background: `${C.muted}22`, borderRadius: "2px 2px 0 0" }} />
+                            <div key={i} style={{ flex: 1, height: 28, background: `${C.muted}22`, borderRadius: "2px 2px 0 0" }} />
                         ))
-                    ) : bars.map((b, i) => (
-                        <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-                            <div style={{
-                                width: "100%",
-                                height: `${(b.kwh / maxKwh) * 90}%`,
-                                background: b.peak_flag
+                    ) : bars.map((b, i) => {
+                        const isPeak = (b.hour >= 7 && b.hour <= 9) || (b.hour >= 18 && b.hour <= 22);
+                        const isTop = b.kwh === maxKwh;
+                        const barHeight = Math.max((b.kwh / maxKwh) * 86, b.kwh > 0 ? 4 : 0);
+                        return (
+                            <div key={i} style={{
+                                flex: 1,
+                                height: barHeight,
+                                background: isTop
                                     ? "linear-gradient(180deg, #ff4757, #ff475788)"
-                                    : `${C.muted}44`,
+                                    : isPeak
+                                        ? `linear-gradient(180deg, ${C.amber}, ${C.amber}66)`
+                                        : `${C.green}55`,
                                 borderRadius: "2px 2px 0 0",
-                                boxShadow: b.peak_flag ? `0 0 8px rgba(255,71,87,0.5)` : "none",
-                            }} />
-                        </div>
-                    ))}
+                                boxShadow: isTop ? `0 0 8px rgba(255,71,87,0.5)` : "none",
+                                transition: "height 0.4s ease",
+                            }} title={`${b.label}: ${b.kwh.toFixed(3)} kWh`} />
+                        );
+                    })}
                 </div>
 
-                {/* Spike annotation */}
+                {/* X-axis labels */}
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, ...mono, color: C.muted, marginBottom: 6 }}>
+                    <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
+                </div>
+
+                {/* Legend + spike annotation */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, ...mono, color: C.muted }}>
-                    {spike ? (
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ display: "flex", gap: 10 }}>
+                        <span><span style={{ color: C.green }}>■</span> off-peak</span>
+                        <span><span style={{ color: C.amber }}>■</span> peak</span>
+                        <span><span style={{ color: C.red }}>■</span> highest</span>
+                    </div>
+                    {spike && (
+                        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                             <span style={{ color: C.red, fontSize: 10 }}>●</span>
-                            <span>Spike at {spike.display_time} ({spike.likely_appliances[0] ?? "unknown"})</span>
+                            <span>spike {spike.display_time}</span>
                         </div>
-                    ) : (
-                        <div />
                     )}
-                    <span>kWh ↔</span>
                 </div>
             </div>
 

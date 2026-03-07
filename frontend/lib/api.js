@@ -33,3 +33,7 @@ export function fetchForecast() {
 export function fetchOptimiser() {
     return get("/api/optimiser/");
 }
+
+export function fetchConsumption() {
+    return get("/api/consumption/");
+}
