@@ -1,12 +1,5 @@
 # SP Energy Pulse
 
-## Hackathon Demo Tech Stack
-
-**Web app simulating a mobile experience --- no DevOps, no cloud infra,
-no real push notifications**
-
-------------------------------------------------------------------------
-
 # Demo Philosophy
 
 This is a **hackathon demo**, not a production deployment.
@@ -16,19 +9,6 @@ Every technology choice is optimised for:
 -   **Building fast**
 -   **Looking convincing on screen**
 
-There is:
-
--   No AWS
--   No CI/CD pipeline
--   No real push notifications
--   No live external API calls during the demo
-
-Everything that matters is:
-
--   The **user experience**
--   The **data flow**
--   The **AI‑generated insights**
--   The **visualisations**
 
 ------------------------------------------------------------------------
 
@@ -57,11 +37,11 @@ No native mobile build is required.
 
 ## Frontend
 
-**Next.js 14 • TypeScript • Tailwind CSS • Recharts • Zustand**
+**Next.js 14 (App Router) • React • Tailwind CSS • Framer Motion • Lucide React**
 
 ## Backend
 
-**Python • FastAPI • SQLite • pandas • Pydantic**
+**Python • FastAPI • pandas • Pydantic**
 
 ## Database
 
@@ -69,7 +49,7 @@ No native mobile build is required.
 
 ## AI / ML
 
-**GPT‑4o (OpenAI API) • demo_outputs.json (scripted ML results)**
+**NILM (Non-Intrusive Load Monitoring) • Statistical spike detection • GPT‑4o (OpenAI API) • demo_outputs.json (scripted ML results)**
 
 ## Simulated
 
@@ -114,24 +94,29 @@ app**.
                                       Supports nested layouts used to
                                       wrap pages in mobile chrome.
 
-  **TypeScript**                      End‑to‑end type safety between
-                                      frontend and FastAPI backend
-                                      models.
+  **Tailwind CSS**                    Base utility classes for layout
+                                      and spacing; most component
+                                      styling uses inline styles for
+                                      precise dark-theme control.
 
-  **Tailwind CSS**                    All styling --- mobile layout,
-                                      colours, spacing, and
-                                      responsiveness.
+  **Framer Motion**                   UI animations: counter from $0
+                                      on the Savings card, progress bar
+                                      slide, card entrance transitions,
+                                      and the spike toast notification.
 
-  **Recharts**                        Data visualisations including
-                                      consumption graphs, spike bell
-                                      curves, and grid demand charts.
+  **Lucide React**                    Icon set used across all tab
+                                      headers, nav bar, and action
+                                      cards.
 
-  **Zustand**                         Global state management for user
-                                      profile, notifications, and demo
-                                      flags.
+  **Custom SVG charts**               Area chart (Grid tab) and bar
+                                      chart (Dashboard) built directly
+                                      in SVG with linearGradient and
+                                      mouse-interaction handlers — no
+                                      third-party charting library.
 
-  **Framer Motion**                   UI animations such as tree growth
-                                      and card transitions.
+  **React Context (FabContext)**      Lightweight global state for the
+                                      floating action button without
+                                      an external store dependency.
   -----------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -223,16 +208,50 @@ restores the initial state in **under 5 seconds**.
 
 # AI and ML Layer
 
-The demo uses **two types of AI components**:
+The demo uses **three types of AI/ML components**:
 
-1.  Real AI (GPT‑4o)
-2.  Scripted model outputs
+1.  NILM model (appliance disaggregation)
+2.  Statistical spike detection
+3.  Real AI (GPT‑4o) and scripted model outputs
 
 This ensures:
 
 -   Reliable demo behaviour
 -   Fast performance
 -   Convincing AI interactions
+
+------------------------------------------------------------------------
+
+# NILM --- Appliance Recognition
+
+A **Non-Intrusive Load Monitoring (NILM)** model disaggregates the
+household's aggregate meter signal into individual appliance readings.
+
+The model identifies appliance signatures (power draw shape, duration,
+compressor cycles) from the raw kWh stream — no smart plugs required.
+
+In the demo, three appliances are tracked:
+
+-   Air Conditioner
+-   Refrigerator
+-   Tumble Dryer
+
+User spike labels feed back into the model to improve accuracy over
+time.
+
+------------------------------------------------------------------------
+
+# Statistical Spike Detection
+
+Consumption spikes are detected by comparing each time-slot reading
+against a rolling 30-day baseline using ClickHouse's built-in
+statistical functions:
+
+    baseline + 1.5 × stddev  →  spike threshold
+
+Separate baselines are maintained for weekdays and weekends. When a
+reading exceeds the threshold, the Spike Detected card surfaces on the
+dashboard, prompting the user to log the responsible appliance.
 
 ------------------------------------------------------------------------
 
@@ -355,11 +374,11 @@ Next.js application.
 
 Example pages:
 
--   dashboard
--   grid
--   forest
--   appliances
--   optimiser
+-   dashboard (Home tab)
+-   grid (Grid tab)
+-   forest (Your Forest tab)
+-   appliances (Devices tab)
+-   optimiser (Savings tab)
 -   onboarding
 
 ------------------------------------------------------------------------

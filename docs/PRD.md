@@ -82,21 +82,20 @@ interlocking pillars:
 The onboarding sequence follows one principle: **show value before
 requesting data**.
 
-1.  User opens SP Energy Pulse and sees a **30‑second animated demo**
-    showing spike detection and savings.
-2.  User taps **"See My Data"** and enters their **SP meter number**.
-3.  Optional profile inputs configure the Analogy Engine:
-    -   Household size\
-    -   Home type (HDB 4-room default)\
-    -   Age group\
-    -   Grid familiarity question
-4.  User indicates whether they are on the **Time-of-Use (TOU) tariff**.
-5.  Analogy Engine selects relatable units such as:
+1.  User opens SP Energy Pulse and completes a multi-step
+    **personalisation flow**:
+    -   Household size
+    -   Home type (HDB 4-room default)
+    -   Appliances in use
+    -   Energy plan selection
+2.  The **Time-of-Use (TOU) plan card** includes a **"?" icon** that
+    toggles an inline explanation covering peak/off-peak hours and the
+    estimated ~$18/month savings potential.
+3.  Analogy Engine selects relatable units such as:
     -   Bubble tea
     -   Hours of aircon
     -   MRT trips
-6.  User lands on the **Resilience Forest Dashboard** with their first
-    week of data visualised.
+4.  User lands on the **Dashboard** with their usage data visualised.
 
 **Design rationale:** Showing value first significantly reduces
 onboarding drop-off.
@@ -110,11 +109,16 @@ spreadsheet**.
 
 Features include:
 
--   24-hour usage graph with **half‑hourly resolution**
--   Analogy Engine overlay translating kWh into **real-life units**
--   **Neighbour comparison** against similar HDB households
--   **Grid impact strip** showing peak demand context
--   **Daily streak counter** encouraging reduced usage
+-   Energy usage graph with **day / week / month** toggle
+-   Heat-gradient bars (green → amber → red) reflecting consumption
+    intensity relative to the household's peak
+-   Hover tooltip showing exact kWh and cost per bar
+-   **Bell notification icon** with iOS-style slideshow of 4 personalised
+    alerts (e.g. TOU enrolment reminder, grid peak warning, streak
+    milestone, voucher unlock)
+-   **Spike Detected card** — flags statistically anomalous activity
+    (e.g. 3–5 PM surge) detected via rolling baseline analysis; lets
+    the user log the responsible appliance and earn +10 points
 
 ------------------------------------------------------------------------
 
@@ -137,24 +141,28 @@ Daily engagement loop encouraging behavioural change.
 
 ## Phase 4 --- Spike Detection & Resolution
 
-Next‑day feedback loop that identifies unusual consumption.
+Real-time feedback loop that identifies unusual consumption using
+**statistical time-series analysis**.
 
 Detection logic:
 
--   Rolling **30‑day baseline**
+-   Rolling **30‑day baseline** per time slot
 -   **1.5 standard deviation anomaly threshold**
 -   Separate weekday/weekend baselines
+-   Powered by ClickHouse built-in statistical aggregation functions
 
 User flow:
 
-1.  Push notification: **"Unusual spike detected yesterday."**
-2.  User labels appliance causing spike.
-3.  Impact explained using the **Analogy Engine**.
-4.  User earns **points for training the ML model**.
+1.  **Spike Detected card** appears on the dashboard.
+2.  User selects the responsible appliance from their registered devices
+    (Air Conditioner, Refrigerator, Tumble Dryer).
+3.  Logging earns **+10 Ecosystem Points** confirmed by an in-app toast.
+4.  Labels feed back into the NILM model to improve future appliance
+    attribution accuracy.
 
 ------------------------------------------------------------------------
 
-## Phase 5 --- Gamification: The Resilience Forest
+## Phase 5 --- Gamification: Your Forest
 
 A behavioural reinforcement system where households grow a digital tree.
 
@@ -170,24 +178,29 @@ Points can be redeemed for:
 -   SP bill rebates
 -   Carbon offset certificates
 -   Grab / NTUC vouchers
--   NEA Climate Friendly Household vouchers
+-   NEA Climate Friendly Household (CFH) vouchers
+
+Redeemed vouchers display a green **"Redeemed" pill** with a
+green-tinted card background to clearly distinguish claimed from
+available rewards.
 
 ------------------------------------------------------------------------
 
 ## Phase 6 --- Appliance Intelligence
 
 Energy disaggregation identifies appliances **without smart plugs or
-additional hardware**.
+additional hardware** using a **NILM (Non-Intrusive Load Monitoring)**
+model.
 
 System design:
 
--   Pre‑trained signature models from industry datasets
--   Household-specific ML tuning via spike labels
--   Passive detection of appliance upgrades
-
-Example detection:
-
-> Overnight baseline drops → fridge replacement detected.
+-   NILM model analyses the aggregate meter signal (power draw shape,
+    duration, frequency) to identify per-appliance signatures
+-   Household-specific tuning via user-submitted spike labels
+-   Demo tracks three appliances: **Air Conditioner**, **Refrigerator**,
+    **Tumble Dryer**
+-   Passive detection of appliance upgrades (e.g. overnight baseline
+    drop → fridge replacement)
 
 Users can log upgrades and receive **bonus points for efficient
 appliances**.
@@ -223,36 +236,46 @@ The grid cares about **simultaneous demand**, not monthly totals.
 
 Features:
 
--   Live national grid demand
--   Yesterday demand replay
--   Tomorrow demand forecast
--   Real‑time **Grid Stress Alerts**
+-   Live national grid utilisation area chart with interactive
+    **crosshair and floating tooltip** (similar to stock market charts)
+-   Gradient stroke: green at low utilisation, red at high
+-   AI-generated grid summary with simulated retrieval loading effect
+-   **Comparison card** benchmarking the household against the median
+    4-room HDB (380 kWh), with an explanation of the key consumption
+    drivers (e.g. unoccupied aircon usage)
+-   Real-time **Grid Stress Alerts**
 
 Example analogy:
 
-> "The grid at 7:30 PM is like the MRT at rush hour."
+> "If 10,000 households shifted one appliance out of peak hours:
+> −180 MW peak demand. Enough to power 45,000 homes."
 
 Users earn **Grid Hero badges** by shifting usage during peak stress
 periods.
 
 ------------------------------------------------------------------------
 
-## Phase 9 --- AI Savings Optimiser
+## Phase 9 --- AI Savings (Savings Tab)
 
 A unified engine that calculates the **highest‑impact savings action**
-for each household.
+for each household. The tab is labelled **Savings** in the bottom
+navigation.
 
-Example recommendation stack:
+Features:
 
-1.  Enrol in TOU tariff --- \$18/month
-2.  Shift dryer usage --- \$9/month
-3.  Upgrade old fridge --- \$14/month
-
-Users also receive:
-
--   Monthly **AI Savings Report**
--   **What‑If Simulator**
--   Personalised savings roadmap
+-   **Current vs Optimised card** — animated TOU cost counter (counts
+    from $0 to $124/mo with aggressive ease-out) and a progress bar that
+    animates from 100% down to 60% to visually show cost reduction
+    vs the $142/mo flat rate
+-   Ranked recommendation cards with impact badges:
+    1.  Enrol in TOU tariff — $18/month *(High Impact)*
+    2.  Shift dryer to after 11 PM — $9/month *(Behavioural)*
+    3.  Upgrade 2009 fridge to 4-Tick — $14/month *(Voucher Eligible)*
+-   **Set Reminder** button opens a bottom-sheet modal with a textarea
+    and confirmation state
+-   **Check Voucher** button redirects to the Your Forest tab to claim
+    the CFH voucher
+-   Personalised savings roadmap based on last 3 months of consumption
 
 ------------------------------------------------------------------------
 

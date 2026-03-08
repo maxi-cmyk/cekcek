@@ -4,19 +4,15 @@
 
 ## Step 1: The Tech Stack
 
-**Frontend** - React Native, Flutter, or React / Next.js for a
-responsive web app.
+**Frontend** — Next.js 14 (App Router), React, Tailwind CSS, Framer Motion, Lucide React. Mobile experience simulated inside a 414×896px phone frame rendered in the browser.
 
-**Backend** - Python (FastAPI). - Lightweight and easy to deploy. -
-Excellent ecosystem with libraries like `clickhouse-connect`.
+**Backend** — Python (FastAPI). Lightweight and easy to deploy. Excellent ecosystem with libraries like `clickhouse-connect`.
 
-**Database** - ClickHouse. - Ideal for time‑series analytics like
-half‑hourly energy readings. - Can be deployed quickly using
-**ClickHouse Cloud**.
+**ML** — NILM (Non-Intrusive Load Monitoring) for appliance disaggregation. Statistical rolling-baseline spike detection using ClickHouse built-in functions.
 
-**The Ultimate Failsafe** - A single file in the frontend called
-`fallback_data.js`. - Contains perfectly formatted JSON demo data for
-the **Wei Ling scenario**.
+**Database** — ClickHouse. Ideal for time‑series analytics like half‑hourly energy readings. Deployed using ClickHouse Cloud.
+
+**The Ultimate Failsafe** — All pages fall back to hardcoded demo data with a 2-second simulated loading delay, so the demo always works regardless of backend connectivity.
 
 ------------------------------------------------------------------------
 
@@ -90,13 +86,12 @@ Ensure the **2.5 spike at 2:00 PM** for the Wei Ling demo.
 
 # Step 4: Phase 3 & 4 --- Spike Detection
 
-You need to detect anomalies in energy consumption.
+Anomalies are detected through **statistical time-series analysis** using
+ClickHouse built-in functions.
 
 ### How to Build It
 
-ClickHouse includes built‑in statistical functions.
-
-Example spike detection query:
+ClickHouse includes built‑in statistical functions:
 
 ``` sql
 SELECT
@@ -114,25 +109,33 @@ Then compare today's reading to:
 
 If it exceeds this threshold → trigger a **spike alert**.
 
-### Hardcoded Failsafe
+Separate baselines are maintained for weekday and weekend slots.
 
-If the SQL query fails, show a prebuilt demo scenario:
+### User Flow in the Demo
+
+1.  **Spike Detected card** appears on the dashboard flagging unusual
+    activity (3–5 PM).
+2.  User taps the card — a modal slides up (fixed within the phone frame)
+    showing the 3 registered appliances: Air Conditioner, Refrigerator,
+    Tumble Dryer.
+3.  User selects the responsible appliance — earns **+10 Ecosystem Points**.
+4.  A toast notification confirms "🎉 +10 points earned!" and the modal
+    closes automatically.
+
+### Hardcoded Failsafe
 
 ``` javascript
 {
-"spikeTime": "2:00 PM",
-"kwh": 2.0,
-"cost": "$0.60",
-"bubbleTeaEquivalent": 4,
-"options": ["Aircon", "Dryer", "Oven", "Other"]
+  "spikeTime": "3:00 PM – 5:00 PM",
+  "appliances": ["Air Conditioner", "Refrigerator", "Tumble Dryer"]
 }
 ```
 
 ------------------------------------------------------------------------
 
-# Step 5: Phase 5 --- Resilience Forest (Gamification)
+# Step 5: Phase 5 --- Your Forest (Gamification)
 
-Features: - Tree growth states - Points system - Leaderboard
+Features: - Tree growth states - Points system - Redeemable vouchers - Leaderboard
 
 ### How to Build It
 
@@ -150,17 +153,15 @@ Frontend logic:
     50–100 → Healthy
     < 50 → Wilting
 
+Redeemed vouchers display a **green "Redeemed" pill** with a
+green-tinted card background to distinguish them from available vouchers.
+
 ### Hardcoded Failsafe
 
 ``` javascript
 {
-"currentUser": {
-"points": 350,
-"status": "Thriving"
-},
-"leaderboard": [
-{ "alias": "HDB_Hero_99", "points": 420 }
-]
+  "currentUser": { "points": 350, "status": "Thriving" },
+  "leaderboard": [{ "alias": "HDB_Hero_99", "points": 420 }]
 }
 ```
 
