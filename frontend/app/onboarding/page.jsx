@@ -626,6 +626,7 @@ function SetupProfile({ onNext }) {
     const [size, setSize] = useState(1);
     const [tou, setTou] = useState(null);
     const [fam, setFam] = useState(0);
+    const [showTouInfo, setShowTouInfo] = useState(false);
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -681,7 +682,31 @@ function SetupProfile({ onNext }) {
                 boxShadow: tou !== null ? `0 0 20px ${C.greenGlow}` : "none",
                 transition: "border-color 0.3s, box-shadow 0.3s",
             }}>
-                <div style={{ color: C.muted, fontSize: 10, ...mono, marginBottom: 4 }}>TIME-OF-USE PLAN</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                    <div style={{ color: C.muted, fontSize: 10, ...mono }}>TIME-OF-USE PLAN</div>
+                    <button
+                        onClick={() => setShowTouInfo(v => !v)}
+                        style={{
+                            width: 18, height: 18, borderRadius: "50%",
+                            background: showTouInfo ? C.blue : C.dim,
+                            border: `1px solid ${showTouInfo ? C.blue : C.border}`,
+                            color: showTouInfo ? "#fff" : C.muted,
+                            fontSize: 11, fontWeight: 800, cursor: "pointer",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontFamily: "inherit", lineHeight: 1, flexShrink: 0,
+                            transition: "background 0.2s, border-color 0.2s",
+                        }}
+                    >?</button>
+                </div>
+                {showTouInfo && (
+                    <div style={{
+                        background: `${C.blue}0d`, border: `1px solid ${C.blue}25`,
+                        borderRadius: 10, padding: "10px 12px", marginBottom: 10,
+                        fontSize: 12, color: C.muted, lineHeight: 1.6,
+                    }}>
+                        <span style={{ color: C.text, fontWeight: 700 }}>Time-of-Use (TOU)</span> is an electricity pricing plan where you pay <span style={{ color: C.red, fontWeight: 600 }}>more during peak hours</span> (7–9 AM & 6–10 PM) and <span style={{ color: C.green, fontWeight: 600 }}>less off-peak</span>. By shifting heavy appliances like your washing machine or dryer to run after 10 PM, you can save up to <span style={{ color: C.green, fontWeight: 700 }}>$18/month</span>.
+                    </div>
+                )}
                 <div style={{ color: C.text, fontSize: 13, fontWeight: 700, marginBottom: 10 }}>
                     Are you on SP{"'"}s TOU tariff?
                 </div>

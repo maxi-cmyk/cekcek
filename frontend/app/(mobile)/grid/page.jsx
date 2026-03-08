@@ -167,14 +167,27 @@ export default function GridPage() {
                     <p style={{ fontSize: 14, color: C.text, lineHeight: 1.75, margin: "0 0 16px" }}>{summary}</p>
                 )}
                 <div style={{ background: C.bg, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
-                    <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
-                        <span style={{ fontSize: 16 }}>🌍</span>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: C.blue }}>If 10,000 households shifted one appliance out of peak hours:</span>
-                    </div>
-                    <div style={{ fontSize: 28, fontWeight: 900, ...mono, letterSpacing: "-0.05em", color: C.text, lineHeight: 1, marginBottom: 4 }}>
-                        -180 MW <span style={{ fontSize: 16, color: C.muted, letterSpacing: 0 }}>peak demand</span>
-                    </div>
-                    <div style={{ fontSize: 12, color: C.muted }}>Enough to power 45,000 homes</div>
+                    {loading ? (
+                        <>
+                            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
+                                <div className="skeleton" style={{ width: 20, height: 20, borderRadius: 4 }} />
+                                <div className="skeleton-x" style={{ width: "80%", height: 13 }} />
+                            </div>
+                            <div className="skeleton-x" style={{ width: "55%", height: 28, marginBottom: 8 }} />
+                            <div className="skeleton-x" style={{ width: "65%", height: 12, animationDelay: "0.2s" }} />
+                        </>
+                    ) : (
+                        <>
+                            <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 8 }}>
+                                <span style={{ fontSize: 16 }}>🌍</span>
+                                <span style={{ fontSize: 13, fontWeight: 700, color: C.blue }}>If 10,000 households shifted one appliance out of peak hours:</span>
+                            </div>
+                            <div style={{ fontSize: 28, fontWeight: 900, ...mono, letterSpacing: "-0.05em", color: C.text, lineHeight: 1, marginBottom: 4 }}>
+                                -180 MW <span style={{ fontSize: 16, color: C.muted, letterSpacing: 0 }}>peak demand</span>
+                            </div>
+                            <div style={{ fontSize: 12, color: C.muted }}>Enough to power 45,000 homes</div>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -227,6 +240,44 @@ export default function GridPage() {
                         <div className="skeleton-x" style={{ width: 60, height: 12 }} />
                     </div>
                 )}
+            </div>
+
+            {/* Comparison */}
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20, marginTop: 16 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: C.muted, ...mono, marginBottom: 20 }}>COMPARISON</div>
+
+                {/* Median HDB bar */}
+                <div style={{ marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, color: C.muted, lineHeight: 1.4 }}>Median 4-room HDB</span>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: C.muted, ...mono }}>380 kWh</span>
+                    </div>
+                    <div style={{ background: C.dim, borderRadius: 99, height: 8, overflow: "hidden" }}>
+                        <div style={{ width: "72%", height: "100%", background: C.muted, borderRadius: 99 }} />
+                    </div>
+                </div>
+
+                {/* You bar */}
+                <div style={{ marginBottom: 20 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: C.text }}>You</span>
+                        <span style={{ fontSize: 12, fontWeight: 800, color: C.blue, ...mono }}>521 kWh</span>
+                    </div>
+                    <div style={{ background: C.dim, borderRadius: 99, height: 8, overflow: "hidden" }}>
+                        <div style={{ width: "100%", height: "100%", background: `linear-gradient(90deg, ${C.blue}, ${C.blue}99)`, borderRadius: 99, boxShadow: `0 0 8px ${C.blue}55` }} />
+                    </div>
+                </div>
+
+                {/* Explanation box */}
+                <div style={{ background: `${C.blue}0d`, border: `1px solid ${C.blue}25`, borderRadius: 12, padding: "14px 16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+                        <span style={{ fontSize: 14 }}>💡</span>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: C.blue, letterSpacing: "0.06em" }}>+37% ABOVE MEDIAN</span>
+                    </div>
+                    <p style={{ fontSize: 13, color: C.text, lineHeight: 1.65, margin: 0 }}>
+                        Your usage is <span style={{ color: C.blue, fontWeight: 700 }}>141 kWh above</span> the median household. This is likely driven by your <span style={{ fontWeight: 700 }}>air conditioner</span> (running ~45 mins/day unoccupied) and an older <span style={{ fontWeight: 700 }}>refrigerator</span> with a low energy tick rating — both flagged in your Appliance Intelligence.
+                    </p>
+                </div>
             </div>
         </div>
     );

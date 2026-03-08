@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { useRouter, usePathname } from "next/navigation";
 import { Home, Zap, TreePine, Smartphone, Plus, Sparkles } from "lucide-react";
 import { FabProvider, useFab } from "./FabContext";

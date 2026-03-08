@@ -96,8 +96,8 @@ function VoucherCard({ voucher, unlocked, opened, onOpen }) {
     }
 
     const locked = !unlocked;
-    const bg = locked ? C.bg : opened ? `${voucher.color}10` : `${voucher.color}18`;
-    const borderColor = locked ? C.border : opened ? `${voucher.color}30` : `${voucher.color}50`;
+    const bg = locked ? C.bg : opened ? `${C.green}12` : `${voucher.color}18`;
+    const borderColor = locked ? C.border : opened ? `${C.green}40` : `${voucher.color}50`;
 
     return (
         <div ref={cardRef} onClick={handleClick} style={{
@@ -147,7 +147,11 @@ function VoucherCard({ voucher, unlocked, opened, onOpen }) {
                     {locked ? (
                         <div style={{ fontSize: 11, color: C.muted, ...mono }}>{voucher.pts} pts</div>
                     ) : opened ? (
-                        <div style={{ fontSize: 18 }}>✅</div>
+                        <div style={{
+                            background: `${C.green}20`, border: `1px solid ${C.green}50`,
+                            color: C.green, borderRadius: 8, padding: "4px 10px",
+                            fontSize: 11, fontWeight: 700,
+                        }}>Redeemed</div>
                     ) : (
                         <div style={{
                             background: `${voucher.color}20`, border: `1px solid ${voucher.color}40`,
@@ -241,7 +245,7 @@ export default function ForestPage() {
 
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
                 <TreePine size={24} style={{ color: C.green }} />
-                <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Resilience Forest</h1>
+                <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Your Forest</h1>
             </div>
 
             {/* Community Redemption Ticker */}

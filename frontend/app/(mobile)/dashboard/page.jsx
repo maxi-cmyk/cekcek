@@ -2,7 +2,111 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Building, Flame, HelpCircle, X, Home } from "lucide-react";
+import { Building, Flame, HelpCircle, X, Home, Bell } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const NOTIFICATIONS = [
+    { icon: "🧋", title: "Laundry = savings", body: "18 bubble teas a month — only if you do your laundry right now!", time: "now" },
+    { icon: "🏘️", title: "Your neighbor just saved big", body: "Your neighbor just got $15 off. Save more to redeem for yourself too! 💸", time: "1m ago" },
+    { icon: "🌙", title: "Skip the AC tonight", body: "It's a cold day today — you don't need the AC to sleep tonight ❄️", time: "3m ago" },
+    { icon: "🌳", title: "Your forest is at risk! 🚨", body: "Energy projected to hit baseline by 9:30 PM!! Slow down to save your forest 🔥", time: "5m ago" },
+];
+
+function NotificationOverlay({ onClose }) {
+    const [index, setIndex] = useState(0);
+
+    function handleClick() {
+        if (index < NOTIFICATIONS.length - 1) {
+            setIndex(i => i + 1);
+        } else {
+            onClose();
+        }
+    }
+
+    const notif = NOTIFICATIONS[index];
+
+    return (
+        <div
+            onClick={handleClick}
+            style={{
+                position: "absolute", inset: 0, zIndex: 300,
+                backdropFilter: "blur(18px)",
+                WebkitBackdropFilter: "blur(18px)",
+                background: "rgba(4,6,12,0.55)",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", paddingTop: 80,
+            }}
+        >
+            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, marginBottom: 16, letterSpacing: "0.06em" }}>
+                Tap anywhere to continue
+            </div>
+
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: -40, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.96 }}
+                    transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                        width: "88%",
+                        background: "rgba(28,32,46,0.92)",
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
+                        borderRadius: 20,
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        padding: "14px 16px",
+                        boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+                    }}
+                    onClick={e => e.stopPropagation()}
+                >
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <span style={{ fontSize: 11 }}>⚡</span>
+                            <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 600, letterSpacing: "0.04em" }}>SP ENERGY</span>
+                        </div>
+                        <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 11 }}>{notif.time}</span>
+                    </div>
+                    <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                        <div style={{
+                            width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                            background: "rgba(255,255,255,0.08)",
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                            fontSize: 24,
+                        }}>
+                            {notif.icon}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <div style={{ color: "#eef2f8", fontWeight: 700, fontSize: 14, marginBottom: 3 }}>{notif.title}</div>
+                            <div style={{ color: "rgba(238,242,248,0.65)", fontSize: 15, lineHeight: 1.6 }}>{notif.body}</div>
+                        </div>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+
+            <div style={{ display: "flex", gap: 6, marginTop: 20 }}>
+                {NOTIFICATIONS.map((_, i) => (
+                    <div key={i} style={{
+                        width: i === index ? 18 : 6, height: 6, borderRadius: 99,
+                        background: i === index ? "#00d68f" : "rgba(255,255,255,0.2)",
+                        transition: "all 0.3s ease",
+                    }} />
+                ))}
+            </div>
+
+            <button
+                onClick={e => { e.stopPropagation(); onClose(); }}
+                style={{
+                    marginTop: 24, background: "none", border: "none",
+                    color: "rgba(255,255,255,0.4)", fontSize: 12, cursor: "pointer",
+                    fontFamily: "inherit", letterSpacing: "0.05em",
+                }}
+            >
+                dismiss all
+            </button>
+        </div>
+    );
+}
 
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
@@ -140,6 +244,7 @@ export default function DashboardPage() {
     const [grid, setGrid] = useState(null);
     const [gamification, setGamification] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showNotifs, setShowNotifs] = useState(false);
 
     useEffect(() => {
         const t = setTimeout(() => {
@@ -164,13 +269,27 @@ export default function DashboardPage() {
     const gridLabel = grid ? `${grid.current_level} — ${grid.stress_score}% load` : "Loading…";
 
     return (
-        <div style={{ padding: "20px", color: C.text, fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}>
+        <div style={{ position: "relative", padding: "20px", color: C.text, fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}>
+            {showNotifs && <NotificationOverlay onClose={() => setShowNotifs(false)} />}
 
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
                 <Home size={24} style={{ color: C.green }} />
                 <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Home</h1>
-                {loading && <div className="spinner" style={{ marginLeft: "auto" }} />}
+                <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
+                    {loading && <div className="spinner" />}
+                    <button
+                        onClick={() => setShowNotifs(true)}
+                        style={{ background: "none", border: "none", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", position: "relative" }}
+                    >
+                        <Bell size={24} color={C.text} />
+                        <div style={{
+                            position: "absolute", top: -2, right: -2,
+                            width: 8, height: 8, borderRadius: "50%",
+                            background: C.red, border: "1.5px solid #07090f",
+                        }} />
+                    </button>
+                </div>
             </div>
 
             {/* Today's Usage */}
