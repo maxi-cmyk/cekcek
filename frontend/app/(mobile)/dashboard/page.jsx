@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Building, Flame, HelpCircle, X } from "lucide-react";
+import { Building, Flame, HelpCircle, X, Home } from "lucide-react";
 
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
@@ -166,12 +166,12 @@ export default function DashboardPage() {
     return (
         <div style={{ padding: "20px", color: C.text, fontFamily: "'DM Sans', 'Helvetica Neue', sans-serif" }}>
 
-            {/* Spinner */}
-            {loading && (
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
-                    <div className="spinner" />
-                </div>
-            )}
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+                <Home size={24} style={{ color: C.green }} />
+                <h1 style={{ fontSize: 24, fontWeight: 900, margin: 0 }}>Home</h1>
+                {loading && <div className="spinner" style={{ marginLeft: "auto" }} />}
+            </div>
 
             {/* Today's Usage */}
             <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, marginBottom: 16 }}>
@@ -267,7 +267,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Daily Streak */}
-            <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                 <div>
                     <div style={{ fontSize: 10, letterSpacing: "0.1em", color: C.muted, ...mono, marginBottom: 8 }}>DAILY STREAK</div>
                     {loading ? (
@@ -303,14 +303,27 @@ export default function DashboardPage() {
                 </button>
             </div>
 
-            {/* Anomaly Detected */}
-            <AnomalyCard />
+            {/* Anomaly Detected / Analogy / TOU — hidden while loading */}
+            {loading ? (
+                <>
+                    <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
+                        <div className="skeleton" style={{ height: 148, borderRadius: 16 }} />
+                        <div className="skeleton" style={{ height: 72, borderRadius: 14 }} />
+                        <div className="skeleton" style={{ height: 96, borderRadius: 14 }} />
+                    </div>
+                </>
+            ) : (
+                <>
+                    {/* Anomaly Detected */}
+                    <AnomalyCard />
 
-            {/* Bubble Tea Analogy */}
-            <AnalogyCard />
+                    {/* Bubble Tea Analogy */}
+                    <AnalogyCard />
 
-            {/* TOU Plan */}
-            <TOUCard />
+                    {/* TOU Plan */}
+                    <TOUCard />
+                </>
+            )}
         </div>
     );
 }
