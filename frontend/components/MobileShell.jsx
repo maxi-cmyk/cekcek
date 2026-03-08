@@ -11,7 +11,7 @@ const navItems = [
     { id: "grid", href: "/grid", icon: Zap, label: "Grid" },
     { id: "forest", href: "/forest", icon: TreePine, label: "Forest" },
     { id: "appliances", href: "/appliances", icon: Smartphone, label: "Devices" },
-    { id: "optimiser", href: "/optimiser", icon: Sparkles, label: "Optimiser" },
+    { id: "optimiser", href: "/optimiser", icon: Sparkles, label: "Savings" },
 ];
 
 function PhoneFrame({ children }) {
@@ -31,6 +31,7 @@ function PhoneFrame({ children }) {
             display: "flex",
             flexDirection: "column",
             position: "relative",
+            transform: "translateZ(0)",
         }}>
             {/* Status bar */}
             <div style={{

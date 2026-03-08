@@ -179,10 +179,6 @@ function AnimatedSavingsCard() {
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 14 }}>
                 <div>
-                    <div style={{ color: C.muted, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 }}>Flat Rate</div>
-                    <div style={{ color: C.text, fontWeight: 800, fontSize: 24 }}>$142<span style={{ fontSize: 13, fontWeight: 600 }}>/mo</span></div>
-                </div>
-                <div style={{ textAlign: "right" }}>
                     <div style={{ color: C.muted, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 }}>TOU Saving</div>
                     <div style={{ color: C.green, fontWeight: 800, fontSize: 24 }}>
                         <motion.span style={{ fontVariantNumeric: "tabular-nums" }}>{rounded}</motion.span>
@@ -197,12 +193,16 @@ function AnimatedSavingsCard() {
                         Save $18/mo
                     </motion.div>
                 </div>
+                <div style={{ textAlign: "right" }}>
+                    <div style={{ color: C.muted, fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 }}>Flat Rate</div>
+                    <div style={{ color: C.text, fontWeight: 800, fontSize: 24 }}>$142<span style={{ fontSize: 13, fontWeight: 600 }}>/mo</span></div>
+                </div>
             </div>
             {/* Progress bar */}
             <div style={{ background: C.borderLight, borderRadius: 99, height: 6, overflow: "hidden", marginBottom: 10 }}>
                 <motion.div
-                    initial={{ width: 0 }}
-                    animate={inView ? { width: "87%" } : {}}
+                    initial={{ width: "100%" }}
+                    animate={inView ? { width: "60%" } : {}}
                     transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     style={{
                         height: "100%", background: C.green,

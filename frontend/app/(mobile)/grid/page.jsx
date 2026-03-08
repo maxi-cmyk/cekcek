@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Grid } from "lucide-react";
 const C = {
     bg: "#07090f", surface: "#0e1219", border: "#1c2535",
@@ -66,8 +66,11 @@ const DEMO_TIMELINE = [
     { hour:23, minute:30, utilisation_pct:46.2, demand_mw:4620, capacity_mw:10000 },
 ];
 
-// SVG area chart using utilisation_pct from real ClickHouse data
+// SVG area chart with green→red gradient and interactive crosshair
 function AreaChart({ data }) {
+    const [hoverIdx, setHoverIdx] = useState(null);
+    const svgRef = useRef(null);
+
     if (!data || data.length === 0) return null;
     const W = 380, H = 100;
     const values = data.map(d => d.utilisation_pct);
@@ -75,28 +78,108 @@ function AreaChart({ data }) {
     const maxV = Math.max(...values);
     const range = maxV - minV || 1;
 
-    const pts = data.map((d, i) => {
-        const x = (i / (data.length - 1)) * W;
-        const y = H - ((d.utilisation_pct - minV) / range) * (H - 10) - 5;
-        return `${x},${y}`;
-    });
+    const pts = data.map((d, i) => ({
+        x: (i / (data.length - 1)) * W,
+        y: H - ((d.utilisation_pct - minV) / range) * (H - 10) - 5,
+        ...d,
+    }));
 
-    // Colour the line red in high-util zones
-    const lineColor = maxV >= 65 ? "#ff4757" : maxV >= 52 ? "#ffb347" : "#00d68f";
-    const linePath = `M ${pts.join(" L ")}`;
-    const areaPath = `M 0,${H} L ${pts.join(" L ")} L ${W},${H} Z`;
+    const linePath = `M ${pts.map(p => `${p.x},${p.y}`).join(" L ")}`;
+    const areaPath = `M 0,${H} L ${pts.map(p => `${p.x},${p.y}`).join(" L ")} L ${W},${H} Z`;
+
+    function handleMouseMove(e) {
+        if (!svgRef.current) return;
+        const rect = svgRef.current.getBoundingClientRect();
+        const svgX = ((e.clientX - rect.left) / rect.width) * W;
+        let closest = 0, minDist = Infinity;
+        pts.forEach((p, i) => {
+            const d = Math.abs(p.x - svgX);
+            if (d < minDist) { minDist = d; closest = i; }
+        });
+        setHoverIdx(closest);
+    }
+
+    function fmtTime(d) {
+        const h = d.hour, m = d.minute;
+        const ampm = h >= 12 ? "PM" : "AM";
+        const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+        return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+    }
+
+    const hovPt = hoverIdx !== null ? pts[hoverIdx] : null;
+    const xPct = hovPt ? (hovPt.x / W) * 100 : 0;
+    const flipLeft = hovPt && hovPt.x > W * 0.65;
 
     return (
-        <svg width="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display: "block" }}>
-            <defs>
-                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={lineColor} stopOpacity="0.3" />
-                    <stop offset="95%" stopColor={lineColor} stopOpacity="0" />
-                </linearGradient>
-            </defs>
-            <path d={areaPath} fill="url(#areaGrad)" />
-            <path d={linePath} fill="none" stroke={lineColor} strokeWidth="2" />
-        </svg>
+        <div style={{ position: "relative" }}>
+            <svg
+                ref={svgRef}
+                width="100%"
+                viewBox={`0 0 ${W} ${H}`}
+                preserveAspectRatio="none"
+                style={{ display: "block", cursor: "crosshair" }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={() => setHoverIdx(null)}
+            >
+                <defs>
+                    {/* vertical gradient: red at top (high), green at bottom (low) */}
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%"   stopColor="#ff4757" />
+                        <stop offset="45%"  stopColor="#ffb347" />
+                        <stop offset="100%" stopColor="#00d68f" />
+                    </linearGradient>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%"   stopColor="#ff4757" stopOpacity="0.35" />
+                        <stop offset="50%"  stopColor="#ffb347" stopOpacity="0.15" />
+                        <stop offset="100%" stopColor="#00d68f" stopOpacity="0" />
+                    </linearGradient>
+                </defs>
+
+                <path d={areaPath} fill="url(#areaGrad)" />
+                <path d={linePath} fill="none" stroke="url(#lineGrad)" strokeWidth="2" strokeLinejoin="round" />
+
+                {hovPt && (
+                    <>
+                        {/* vertical crosshair */}
+                        <line
+                            x1={hovPt.x} y1={0} x2={hovPt.x} y2={H}
+                            stroke="rgba(255,255,255,0.25)" strokeWidth="1" strokeDasharray="3 3"
+                        />
+                        {/* dot on line */}
+                        <circle cx={hovPt.x} cy={hovPt.y} r={3.5} fill="#0e1219" stroke="#eef2f8" strokeWidth="1.5" />
+                    </>
+                )}
+            </svg>
+
+            {/* Floating tooltip */}
+            {hovPt && (
+                <div style={{
+                    position: "absolute",
+                    top: 4,
+                    left: flipLeft ? "auto" : `${xPct}%`,
+                    right: flipLeft ? `${100 - xPct}%` : "auto",
+                    transform: flipLeft ? "translateX(8px)" : "translateX(-50%)",
+                    background: "rgba(14,18,25,0.95)",
+                    border: "1px solid #1c2535",
+                    borderRadius: 8,
+                    padding: "6px 10px",
+                    pointerEvents: "none",
+                    zIndex: 10,
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
+                }}>
+                    <div style={{ fontSize: 10, color: "#5a7090", fontFamily: "'JetBrains Mono',monospace", marginBottom: 2 }}>
+                        {fmtTime(hovPt)}
+                    </div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#eef2f8", fontFamily: "'JetBrains Mono',monospace" }}>
+                        {hovPt.utilisation_pct}%
+                    </div>
+                    <div style={{ fontSize: 10, color: "#5a7090" }}>
+                        {hovPt.demand_mw?.toLocaleString()} MW
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
 
@@ -217,7 +300,7 @@ export default function GridPage() {
                         </svg>
                     </div>
                 ) : (
-                    <div style={{ height: 100, marginBottom: 8, overflow: "hidden" }}>
+                    <div style={{ marginBottom: 8 }}>
                         <AreaChart data={timeline} />
                     </div>
                 )}

@@ -115,6 +115,24 @@ const C = {
 };
 const mono = { fontFamily: "'JetBrains Mono', 'Fira Code', monospace" };
 
+const DEMO_WEEK = [
+    { label: "Mon", kwh: 8.2 },
+    { label: "Tue", kwh: 9.1 },
+    { label: "Wed", kwh: 7.8 },
+    { label: "Thu", kwh: 10.4 },
+    { label: "Fri", kwh: 11.2 },
+    { label: "Sat", kwh: 14.8 },
+    { label: "Sun", kwh: 13.5 },
+];
+
+const DEMO_MONTH = [
+    7.4, 8.9, 6.2, 9.8, 11.5, 13.1, 12.4,
+    8.1, 7.3, 10.6, 9.2, 8.7, 15.8, 11.9,
+    6.8, 9.5, 12.3, 8.4, 7.1, 10.2, 14.7,
+    9.9, 8.3, 11.1, 6.5, 13.6, 10.8, 16.2,
+    7.9, 9.3,
+].map((kwh, i) => ({ label: `${i + 1}`, kwh }));
+
 const DEMO_CONSUMPTION = [
     { hour:0,  minute:0,  kwh:0.135 }, { hour:0,  minute:30, kwh:0.132 },
     { hour:1,  minute:0,  kwh:0.120 }, { hour:1,  minute:30, kwh:0.115 },
@@ -147,6 +165,160 @@ const ANOMALY_SLOTS = [
     { t: "3PM", hot: true  }, { t: "4PM", hot: true  }, { t: "5PM", hot: true },
     { t: "6PM", hot: false }, { t: "7PM", hot: true  }, { t: "8PM", hot: true },
 ];
+
+const SPIKE_SLOTS = [
+    { t: "12PM", hot: false }, { t: "1PM", hot: false }, { t: "2PM", hot: false },
+    { t: "3PM", hot: true  }, { t: "4PM", hot: true  }, { t: "5PM", hot: true  },
+    { t: "6PM", hot: false }, { t: "7PM", hot: false }, { t: "8PM", hot: false },
+];
+
+const SPIKE_APPLIANCES = [
+    { emoji: "❄️", label: "Air Conditioner" },
+    { emoji: "🧊", label: "Refrigerator" },
+    { emoji: "🌀", label: "Tumble Dryer" },
+];
+
+function SpikeCard() {
+    const [showModal, setShowModal] = useState(false);
+    const [selected, setSelected] = useState(null);
+    const [showToast, setShowToast] = useState(false);
+
+    function handleSubmit() {
+        if (!selected) return;
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+            setShowModal(false);
+            setSelected(null);
+        }, 2200);
+    }
+
+    function closeModal() {
+        setShowModal(false);
+        setSelected(null);
+        setShowToast(false);
+    }
+
+    return (
+        <>
+            {/* Card */}
+            <div
+                onClick={() => setShowModal(true)}
+                style={{ background: C.surface, border: "1px solid #ff475733", borderRadius: 16, overflow: "hidden", marginBottom: 16, cursor: "pointer" }}
+            >
+                {/* banner */}
+                <div style={{ background: "linear-gradient(135deg, #ff475718, #ff47570d)", borderBottom: "1px solid #ff475733", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <span style={{ fontSize: 18 }}>⚡</span>
+                        <div>
+                            <div style={{ color: C.red, fontWeight: 800, fontSize: 13 }}>Spike detected · 3–5 PM today</div>
+                            <div style={{ color: C.muted, fontSize: 11 }}>Usage jumped 2.1× above your baseline</div>
+                        </div>
+                    </div>
+                    <div style={{ background: `${C.red}20`, border: `1px solid ${C.red}40`, borderRadius: 8, padding: "4px 10px", fontSize: 11, fontWeight: 700, color: C.red, whiteSpace: "nowrap" }}>
+                        Tap to log
+                    </div>
+                </div>
+
+                <div style={{ padding: "14px 16px" }}>
+                    <div style={{ color: C.muted, fontSize: 10, fontFamily: "'JetBrains Mono',monospace", marginBottom: 8 }}>TODAY'S HOURLY PATTERN</div>
+                    <div style={{ display: "flex", gap: 3 }}>
+                        {SPIKE_SLOTS.map((s, i) => (
+                            <div key={i} style={{ flex: 1 }}>
+                                <div style={{
+                                    height: 28, borderRadius: 4,
+                                    background: s.hot ? "linear-gradient(180deg, #ff4757, #ff475766)" : "#5a709022",
+                                    border: s.hot ? "1px solid #ff475766" : "none",
+                                    boxShadow: s.hot ? "0 0 6px #ff475744" : "none",
+                                }} />
+                                <div style={{ color: C.muted, fontSize: 8, textAlign: "center", marginTop: 3, fontFamily: "'JetBrains Mono',monospace" }}>{s.t}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Appliance picker modal — fixed so it sits over the visible phone screen */}
+            {showModal && (
+                <div
+                    onClick={closeModal}
+                    style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "flex-end" }}
+                >
+                    <div onClick={e => e.stopPropagation()} style={{ width: "100%", background: C.surface, borderRadius: "24px 24px 0 0", border: `1px solid ${C.border}`, borderBottom: "none", padding: "0 20px 40px" }}>
+                        {/* drag handle */}
+                        <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 18px" }}>
+                            <div style={{ width: 36, height: 4, borderRadius: 99, background: C.dim }} />
+                        </div>
+
+                        {/* +10 pts toast */}
+                        {showToast && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0 }}
+                                style={{
+                                    position: "absolute", top: 24, left: "50%", transform: "translateX(-50%)",
+                                    background: C.green, color: "#07090f",
+                                    borderRadius: 99, padding: "8px 20px",
+                                    fontWeight: 800, fontSize: 14, whiteSpace: "nowrap",
+                                    boxShadow: `0 0 20px ${C.green}66`,
+                                    zIndex: 10,
+                                }}
+                            >
+                                🎉 +10 points earned!
+                            </motion.div>
+                        )}
+
+                        <div style={{ fontWeight: 800, fontSize: 17, color: C.text, marginBottom: 4 }}>What were you using?</div>
+                        <div style={{ color: C.muted, fontSize: 12, marginBottom: 6 }}>Select the appliance running between 3–5 PM today.</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 20 }}>
+                            <span style={{ fontSize: 13 }}>🌟</span>
+                            <span style={{ fontSize: 12, color: C.green, fontWeight: 700 }}>Log your appliance and earn +10 points</span>
+                        </div>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+                            {SPIKE_APPLIANCES.map(a => {
+                                const active = selected === a.label;
+                                return (
+                                    <button
+                                        key={a.label}
+                                        onClick={() => setSelected(a.label)}
+                                        style={{
+                                            background: active ? `${C.red}18` : C.bg,
+                                            border: `1px solid ${active ? C.red : C.border}`,
+                                            borderRadius: 14, padding: "14px 16px",
+                                            display: "flex", alignItems: "center", gap: 14,
+                                            cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+                                            transition: "all 0.15s",
+                                        }}
+                                    >
+                                        <span style={{ fontSize: 26 }}>{a.emoji}</span>
+                                        <span style={{ fontSize: 14, fontWeight: 600, color: active ? C.red : C.text }}>{a.label}</span>
+                                        {active && <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 800, color: C.green }}>+10 pts</span>}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        <button
+                            onClick={handleSubmit}
+                            style={{
+                                width: "100%", padding: "13px 0",
+                                background: selected ? C.green : C.dim,
+                                color: selected ? "#07090f" : C.muted,
+                                border: "none", borderRadius: 12,
+                                fontWeight: 800, fontSize: 14, cursor: selected ? "pointer" : "default",
+                                fontFamily: "inherit", transition: "all 0.2s",
+                            }}
+                        >
+                            {selected ? `Log ${selected} · +10 pts` : "Select an appliance"}
+                        </button>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}
 
 function AnomalyCard() {
     return (
@@ -245,6 +417,8 @@ export default function DashboardPage() {
     const [gamification, setGamification] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showNotifs, setShowNotifs] = useState(false);
+    const [view, setView] = useState("day");
+    const [hoveredBar, setHoveredBar] = useState(null);
 
     useEffect(() => {
         const t = setTimeout(() => {
@@ -257,13 +431,41 @@ export default function DashboardPage() {
     }, []);
 
     // One bar per hour (average the two 30-min slots)
-    const bars = Array.from({ length: 24 }, (_, h) => {
+    const dayBars = Array.from({ length: 24 }, (_, h) => {
         const slots = consumption.filter(r => r.hour === h);
         const kwh = slots.length ? slots.reduce((s, r) => s + r.kwh, 0) / slots.length : 0;
         return { hour: h, kwh, label: h === 0 ? "12am" : h === 12 ? "12pm" : h < 12 ? `${h}am` : `${h - 12}pm` };
     });
+
+    const bars = view === "day" ? dayBars : view === "week" ? DEMO_WEEK : DEMO_MONTH;
     const maxKwh = Math.max(...bars.map(b => b.kwh), 0.01);
-    const totalKwh = consumption.reduce((s, r) => s + r.kwh, 0);
+    const totalKwh = view === "day"
+        ? consumption.reduce((s, r) => s + r.kwh, 0)
+        : bars.reduce((s, b) => s + b.kwh, 0);
+
+    const viewTitle = view === "day" ? "Today's Usage" : view === "week" ? "This Week" : "This Month";
+    const xLabels = view === "day"
+        ? ["12am", "6am", "12pm", "6pm", "11pm"]
+        : view === "week"
+        ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        : ["1", "8", "15", "22", "30"];
+
+    // Green → Amber → Red interpolation based on 0–1 ratio, returns hex
+    function heatColor(ratio) {
+        let r, g, b;
+        if (ratio <= 0.5) {
+            const t = ratio * 2;
+            r = Math.round(0   + t * (255 - 0));
+            g = Math.round(214 + t * (179 - 214));
+            b = Math.round(143 + t * (71  - 143));
+        } else {
+            const t = (ratio - 0.5) * 2;
+            r = 255;
+            g = Math.round(179 + t * (71  - 179));
+            b = Math.round(71  + t * (87  - 71));
+        }
+        return `#${r.toString(16).padStart(2,"0")}${g.toString(16).padStart(2,"0")}${b.toString(16).padStart(2,"0")}`;
+    }
 
     const gridColor = grid?.current_level === "High" ? C.red : grid?.current_level === "Moderate" ? C.amber : C.green;
     const gridLabel = grid ? `${grid.current_level} — ${grid.stress_score}% load` : "Loading…";
@@ -292,25 +494,34 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            {/* Today's Usage */}
+            {/* Usage card */}
             <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, marginBottom: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         {loading
                             ? <div className="skeleton" style={{ width: 110, height: 15 }} />
                             : <>
-                                <span style={{ fontWeight: 700, fontSize: 15 }}>Today's Usage</span>
+                                <span style={{ fontWeight: 700, fontSize: 15 }}>{viewTitle}</span>
                                 {totalKwh > 0 && <span style={{ fontSize: 13, color: C.green, fontWeight: 700, ...mono }}>{totalKwh.toFixed(2)} kWh</span>}
                               </>
                         }
                     </div>
-                    <div style={{ background: "#0a0f18", padding: 4, borderRadius: 8, border: `1px solid ${C.border}` }}>
-                        <span style={{ padding: "4px 12px", borderRadius: 6, fontSize: 11, fontWeight: 700, background: `${C.green}20`, color: C.green, border: `1px solid ${C.green}30` }}>day</span>
+                    {/* Toggle */}
+                    <div style={{ background: "#0a0f18", padding: 3, borderRadius: 8, border: `1px solid ${C.border}`, display: "flex", gap: 2 }}>
+                        {["day", "week", "month"].map(v => (
+                            <button key={v} onClick={() => setView(v)} style={{
+                                padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700,
+                                background: view === v ? `${C.green}20` : "transparent",
+                                color: view === v ? C.green : C.muted,
+                                border: view === v ? `1px solid ${C.green}30` : "1px solid transparent",
+                                cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s",
+                            }}>{v}</button>
+                        ))}
                     </div>
                 </div>
 
                 {/* Bar chart */}
-                <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 96, marginBottom: 8 }}>
+                <div style={{ display: "flex", alignItems: "flex-end", gap: view === "month" ? 1 : 2, height: 96, marginBottom: 8, position: "relative" }}>
                     {loading
                         ? Array.from({ length: 24 }).map((_, i) => (
                             <div key={i} className="skeleton" style={{
@@ -321,17 +532,48 @@ export default function DashboardPage() {
                             }} />
                           ))
                         : bars.map((b, i) => {
-                            const isPeak = (b.hour >= 7 && b.hour <= 9) || (b.hour >= 18 && b.hour <= 22);
-                            const isTop = b.kwh === maxKwh;
-                            const barHeight = Math.max((b.kwh / maxKwh) * 86, b.kwh > 0 ? 4 : 0);
+                            const ratio = b.kwh / maxKwh;
+                            const color = heatColor(ratio);
+                            const barHeight = Math.max(ratio * 86, b.kwh > 0 ? 4 : 0);
+                            const isHovered = hoveredBar === i;
                             return (
-                                <div key={i} style={{
-                                    flex: 1, height: barHeight,
-                                    background: isTop ? "linear-gradient(180deg, #ff4757, #ff475788)" : isPeak ? `linear-gradient(180deg, ${C.amber}, ${C.amber}66)` : `${C.green}55`,
-                                    borderRadius: "2px 2px 0 0",
-                                    boxShadow: isTop ? `0 0 8px rgba(255,71,87,0.5)` : "none",
-                                    transition: "height 0.4s ease",
-                                }} title={`${b.label}: ${b.kwh.toFixed(3)} kWh`} />
+                                <div
+                                    key={i}
+                                    style={{ flex: 1, height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", position: "relative" }}
+                                    onMouseEnter={() => setHoveredBar(i)}
+                                    onMouseLeave={() => setHoveredBar(null)}
+                                >
+                                    {/* Tooltip */}
+                                    {isHovered && (
+                                        <div style={{
+                                            position: "absolute",
+                                            bottom: barHeight + 6,
+                                            left: "50%",
+                                            transform: "translateX(-50%)",
+                                            background: "#0e1219",
+                                            border: `1px solid ${color}55`,
+                                            borderRadius: 7,
+                                            padding: "4px 8px",
+                                            whiteSpace: "nowrap",
+                                            zIndex: 10,
+                                            pointerEvents: "none",
+                                            boxShadow: `0 4px 12px rgba(0,0,0,0.5)`,
+                                        }}>
+                                            <div style={{ fontSize: 10, color, fontWeight: 800, ...mono }}>{b.label}</div>
+                                            <div style={{ fontSize: 11, color: C.text, fontWeight: 700, ...mono }}>{b.kwh.toFixed(2)} kWh</div>
+                                        </div>
+                                    )}
+                                    {/* Bar */}
+                                    <div style={{
+                                        width: "100%",
+                                        height: barHeight,
+                                        background: `linear-gradient(180deg, ${color}, ${color}88)`,
+                                        borderRadius: "2px 2px 0 0",
+                                        boxShadow: isHovered ? `0 0 8px ${color}88` : "none",
+                                        transition: "height 0.4s ease, box-shadow 0.15s",
+                                        opacity: hoveredBar !== null && !isHovered ? 0.5 : 1,
+                                    }} />
+                                </div>
                             );
                           })
                     }
@@ -339,24 +581,19 @@ export default function DashboardPage() {
 
                 {/* X-axis labels */}
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, ...mono, color: C.muted, marginBottom: 6 }}>
-                    <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
+                    {xLabels.map(l => <span key={l}>{l}</span>)}
                 </div>
 
-                {/* Legend + spike annotation */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, ...mono, color: C.muted }}>
-                    <div style={{ display: "flex", gap: 10 }}>
-                        <span><span style={{ color: C.green }}>■</span> off-peak</span>
-                        <span><span style={{ color: C.amber }}>■</span> peak</span>
-                        <span><span style={{ color: C.red }}>■</span> highest</span>
-                    </div>
-                    {spike && (
-                        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                            <span style={{ color: C.red, fontSize: 10 }}>●</span>
-                            <span>spike {spike.display_time}</span>
-                        </div>
-                    )}
+                {/* Legend */}
+                <div style={{ display: "flex", gap: 10, fontSize: 11, ...mono, color: C.muted }}>
+                    <span><span style={{ color: C.green }}>■</span> low</span>
+                    <span><span style={{ color: C.amber }}>■</span> medium</span>
+                    <span><span style={{ color: C.red }}>■</span> high</span>
                 </div>
             </div>
+
+            {/* Spike Detected */}
+            {!loading && <SpikeCard />}
 
             {/* Grid Status mini-card */}
             <div style={{ background: C.surface, borderRadius: 16, padding: "16px", border: `1px solid ${C.border}`, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
