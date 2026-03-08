@@ -1,158 +1,156 @@
-# SP Energy Pulse — Demo Script
+# SP Energy Pulse — Live Demo Script
 
 **Total time: ~5 minutes**
-**Presenter tip:** Narrate what you're doing as you tap through. Keep energy high — this is a story, not a feature list.
+**URL:** http://localhost:3000
 
 ---
 
-## Opening Line (15 sec)
+## Opening (20 sec)
 
-> "Most Singaporeans check their electricity bill once a month — and have no idea why it went up. SP Energy Pulse changes that. It turns your raw half-hourly meter data into something you can actually act on. Let me show you."
-
-Navigate to **http://localhost:3000** and start on the onboarding screen.
+> "Every Singaporean household gets half-hourly electricity data from SP Group. But seeing data and understanding it are two completely different things. SP Energy Pulse is the layer between raw numbers and real behaviour change. Let me walk you through it."
 
 ---
 
-## 1. Onboarding (30 sec)
+## 1. Onboarding — Personalisation (60 sec)
 
-Walk through the personalisation steps quickly.
+Land on the **onboarding screen**.
 
-> "When you first open the app, it takes 30 seconds to set up your profile — household size, your appliances, and your energy plan."
+> "The first thing we do is learn who you are. Not to collect data for the sake of it — but because a generic tip means nothing. A personalised one changes behaviour."
 
-Tap through to the **Time-of-Use plan card**. Tap the **"?" icon**.
+Step through the household size and appliance selection screens.
 
-> "We surface a quick explanation of what Time-of-Use pricing actually means — most users don't know they can save $18 a month just by shifting when they run their dryer. That information is right here, in context, when they need it."
+> "We ask about your household — how many people, which appliances you actually own. This isn't a form. It's how the system decides what to show you and what to skip. A single person in a studio gets completely different recommendations from a family of four in a 5-room flat."
+
+Arrive at the **Time-of-Use plan card**. Tap the **"?" icon**.
+
+> "Here's a great example of personalisation at the point of decision. Most users don't know what Time-of-Use pricing even means — and we don't assume they do. One tap gives them a plain-English explanation: what peak hours are, what off-peak hours are, and exactly how much they'd save by switching — $18 a month, in their specific case."
+
+> "That's the philosophy across the whole app. Every piece of information is surfaced at the moment it's relevant to a decision the user is already making."
 
 Complete onboarding and land on the **Dashboard**.
 
 ---
 
-## 2. Dashboard — Usage Graph (45 sec)
+## 2. Dashboard — Reading Your Own Behaviour (60 sec)
 
-> "This is the home screen. Your energy usage at a glance."
+> "This is the home screen. But notice — it's not just a chart. Every bar is heat-coded. Green means you're well within your normal range. Amber is moderate. Red means something unusual happened."
 
-Point to the bar chart.
+Toggle **Day → Week → Month**.
 
-> "The bars aren't just numbers — they're heat-coded. Green means you're well within your normal range. Amber is moderate. Red means a spike."
+> "You can look at a single day, a week, or the full month. The weekly and monthly views are where behavioural patterns really show up — the Monday spikes, the weekend surges, the late-night appliance habits you didn't know you had."
 
-Toggle between **Day → Week → Month**.
+Hover over a **red bar** to show the tooltip.
 
-> "You can zoom out to see patterns across the week or the whole month — useful for spotting habits you didn't know you had."
+> "Hover over any bar and you get the exact consumption and estimated cost for that period. Not kWh — dollars. Because that's the number that actually means something to most people."
 
-Hover over a red bar to show the **floating tooltip**.
+Tap the **bell icon** at the top right.
 
-> "Hover over any bar and you get the exact consumption and estimated cost for that period."
+> "Our notification system doesn't send you generic reminders. Every alert is generated from your actual consumption pattern."
 
----
+Click through the **4 notification slides**.
 
-## 3. Bell Notifications (30 sec)
+> "A TOU enrolment nudge timed to when this household's off-peak savings would be highest. A peak demand warning for tonight. A streak milestone. A voucher they've just unlocked. Each one is a behavioural prompt — not just information. And the timing and content are different for every household."
 
-Tap the **bell icon** in the top right.
-
-> "This is our personalised notification centre. Instead of generic alerts, every message is tailored to this household's actual behaviour."
-
-Click through the **4 notification cards**.
-
-> "TOU enrolment reminder based on their usage pattern. A peak demand warning. A streak milestone. A voucher they've unlocked. Each one is actionable — not just informational."
-
-Tap anywhere to dismiss.
+Dismiss the notifications.
 
 ---
 
-## 4. Spike Detected Card (45 sec)
+## 3. Spike Detected — Closing the Feedback Loop (45 sec)
 
 Scroll down to the **Spike Detected card**.
 
-> "Our system runs statistical analysis on every half-hourly reading — comparing it against a rolling 30-day baseline for that exact time slot. When something crosses 1.5 standard deviations above normal, we flag it."
+> "This is one of the most important features in the app. Our backend runs statistical analysis on every half-hourly reading — comparing it against a rolling 30-day baseline for that exact time slot, accounting for whether it's a weekday or weekend. When a reading crosses 1.5 standard deviations above normal, we flag it."
+
+> "But here's the key insight: we don't just tell the user something happened. We ask them to explain it."
 
 Tap the card to open the **appliance modal**.
 
-> "Rather than just telling the user 'something spiked between 3 and 5 PM', we ask them to confirm which appliance was responsible. This does two things: it makes the insight personal, and it trains our NILM model."
+> "We show only the appliances registered to this household — Air Conditioner, Refrigerator, Tumble Dryer. The user picks whichever was running during the spike window."
 
-Select **Air Conditioner**.
+Select **Air Conditioner**. Show the **+10 points toast**.
 
-> "They log it — and earn 10 points for helping improve the system."
-
-Show the **toast notification**.
+> "Two things happen. The user earns 10 points — immediate positive reinforcement for engaging with their data. And the label goes back into our NILM model to sharpen future appliance attribution. The user teaches the system. The system teaches the user. That feedback loop is what turns a one-time interaction into a lasting habit."
 
 ---
 
-## 5. Grid Tab (45 sec)
+## 4. Grid Tab — The Bigger Picture (45 sec)
 
 Navigate to the **Grid tab**.
 
-> "Now let's zoom out from the household to the national grid."
+> "Now let's zoom out from one household to the national grid."
 
-Point to the **area chart**.
+Point to the **area chart** and hover to show the **crosshair tooltip**.
 
-> "This is live national grid utilisation. The stroke colour maps directly to stress level — green when demand is low, red when it's approaching capacity. Hover anywhere on the chart..."
+> "This is live national grid utilisation. The chart uses a gradient — green when demand is low, red as it climbs toward capacity. Hover anywhere and you get the exact utilisation percentage and megawatt figure for that moment."
 
-Hover to show the **crosshair and floating tooltip**.
+Scroll to the **AI grid summary**. Watch the **retrieval animation**.
 
-> "...and you get the exact utilisation percentage and megawatt demand at that moment."
+> "The AI summary loads with a real retrieval effect — because we want users to feel that the insight was generated for them, right now, not pulled from a static cache."
 
-Scroll down to the **Comparison card**.
+Scroll to the **Comparison card**.
 
-> "Here's where it gets personal. The median 4-room HDB uses 380 kWh a month. This household is at 521 — 37% above median. And we can tell them exactly why: their air conditioner is running for 45 minutes a day in an unoccupied room."
+> "This is where personalisation and social proof meet. The median 4-room HDB uses 380 kWh a month. This household is at 521 — 37% above median. And we don't just show that number. We explain it: their air conditioner has been running for approximately 45 minutes a day in an unoccupied room. That's a behavioural insight, not just a statistic. And it's specific enough to act on."
 
 ---
 
-## 6. Your Forest (30 sec)
+## 5. Your Forest — Rewarding the Right Behaviours (30 sec)
 
 Navigate to the **Your Forest tab**.
 
-> "Behaviour change needs a reward loop. Every action — logging a spike, shifting a load, hitting a streak — earns points. Points grow your forest and unlock vouchers."
+> "Behavioural change doesn't stick without a reward loop. Every action in this app — logging a spike, completing a streak, shifting a load — earns Ecosystem Points. Points grow your digital forest and unlock real vouchers."
 
 Point to the **voucher cards**.
 
-> "CDC vouchers, FairPrice, NEA Climate Friendly Household vouchers. Real incentives that SP Group already partners on."
+> "CDC vouchers. FairPrice. NEA Climate Friendly Household vouchers. These are real incentives SP Group already partners on. We're plugging into an existing rewards ecosystem, not building one from scratch."
 
 Show a **redeemed voucher** with the green pill.
 
-> "Redeemed vouchers are clearly marked so users can track what they've claimed."
+> "Once a voucher is claimed, it's clearly marked — so users always know what's available versus what they've already earned."
 
 ---
 
-## 7. Savings Tab (45 sec)
+## 6. Savings Tab — From Insight to Action (45 sec)
 
 Navigate to the **Savings tab**.
 
-> "This is the AI Savings Optimiser. It calculates the highest-impact actions for this specific household — not generic tips."
+> "Every insight in this app leads here — the AI Savings Optimiser. It takes everything we know about this household and calculates the exact actions with the highest return."
 
 Point to the **animated savings card**.
 
-> "Right now they're on a flat rate — $142 a month. Switch to Time-of-Use pricing and that drops to $124. The bar shows the reduction visually."
+> "Right now they're paying $142 a month on a flat rate. Switch to Time-of-Use pricing — which costs them nothing to do — and that drops to $124. The bar animates down to show the reduction visually, not just numerically. We designed that deliberately. A shrinking bar feels like savings. A number changing doesn't."
 
 Point to the **three recommendation cards**.
 
-> "Ranked by impact. Enrol in TOU — $18 a month, zero effort. Shift the dryer to after 11 PM — $9 a month. Upgrade the 2009 fridge to a 4-Tick model — $14 a month, and they're already eligible for a CFH voucher."
+> "Three actions, ranked by impact and effort. Enrol in TOU — $18 a month, zero behavioural change required. Shift the dryer to after 11 PM — $9 a month, one small habit. Upgrade the 2009 fridge to a 4-Tick model — $14 a month in savings, and they already qualify for a government voucher to offset the cost."
 
-Tap **Set Reminder**.
+Tap **Set Reminder** on the dryer card.
 
-> "They can set a reminder directly from here — no friction, no context switching."
+> "The reminder modal lets them schedule the habit change directly in the app — no friction, no app switching, no forgetting."
 
 Tap **Check Voucher** on the fridge card.
 
-> "And the voucher card routes them straight to their Forest to claim it. The whole loop is connected."
+> "And this routes them straight to the Forest tab to claim their CFH voucher. The whole experience is a closed loop — insight leads to action, action leads to reward, reward reinforces the behaviour."
 
 ---
 
-## Closing (20 sec)
+## Close (20 sec)
 
-> "SP Energy Pulse isn't another dashboard. It's a behaviour change engine built on the data SP Group already has. NILM identifies appliances without hardware. ClickHouse handles the time-series analytics at scale. And the experience is designed so that every insight has an action, and every action has a reward."
+> "SP Energy Pulse works because it doesn't treat energy data as the product. It treats behaviour change as the product. The data is just how we get there."
 
-> "Wei Ling got a confusing electricity bill. Now she knows it's her aircon — and she's doing something about it."
+> "NILM identifies appliances without any additional hardware. ClickHouse handles half-hourly time-series analytics at national scale. And every feature — every notification, every chart, every recommendation — is personalised to the household in front of you."
+
+> "Wei Ling got a confusing electricity bill last month. This month, she knows it was her air conditioner. She's shifted it. Her tree is growing. And her bill is down $22."
 
 ---
 
-## Key Numbers to Remember
+## Key Numbers
 
-| Stat | Value |
-|------|-------|
+| | |
+|---|---|
 | Flat rate baseline | $142/mo |
 | TOU optimised | $124/mo |
-| Monthly savings potential | $41/mo (all actions combined) |
+| Savings from all 3 actions | $41/mo |
 | HDB median benchmark | 380 kWh |
-| Demo household usage | 521 kWh (+37% above median) |
-| Points earned per spike label | +10 |
-| Spike detection threshold | 1.5 standard deviations above 30-day rolling baseline |
+| Demo household | 521 kWh (+37% above median) |
+| Spike threshold | 1.5 std dev above 30-day rolling baseline |
+| Points per spike label | +10 |
